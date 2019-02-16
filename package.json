@@ -1,0 +1,20 @@
+{
+  "name": "with-socket.io",
+  "version": "1.0.0",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "express": "^4.15.2",
+    "isomorphic-unfetch": "^2.0.0",
+    "next": "^7.0.3",
+    "pidusage": "^2.0.17",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
+  },
+  "scripts": {
+    "dev": "node ./server/server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node ./server/server.js"
+  }
+}
