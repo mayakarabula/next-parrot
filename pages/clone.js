@@ -1,6 +1,15 @@
 import { Component } from 'react'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
+import constants from '../shared/constants'
+import {
+  assignProjects,
+  assignProcesses,
+  assignErrors,
+  assignSTDERR,
+  assignSTDOUT
+} from '../redux/actions'
+import { connect } from 'react-redux'
 
 class ChatTwo extends Component {
   // fetch old messages data from the server
@@ -26,8 +35,19 @@ class ChatTwo extends Component {
   subscribe = () => {
     if (this.state.subscribe && !this.state.subscribed) {
       // connect to WS server and listen event
-      this.props.socket.on('message.chat2', this.handleMessage)
-      this.props.socket.on('message.chat1', this.handleOtherMessage)
+      const { dispatch } = this.props
+
+      console.log('should subscribe')
+      this.props.socket.on(constants.PROJECTS_LIST, (data) => dispatch(assignProjects(data)))
+      this.props.socket.on(constants.GENERAL_ERROR, (data) => dispatch(assignErrors(data)))
+      this.props.socket.on(constants.STDOUT, (data) => dispatch(assignSTDOUT(data)))
+      this.props.socket.on(constants.STDERR, (data) => dispatch(assignSTDERR(data)))
+      this.props.socket.on(constants.PROCESS_FINISHED, (data) => dispatch(assignSTDOUT(data)))
+      this.props.socket.on(constants.START_PROCESS, (data) => dispatch(assignSTDOUT(data)))
+      this.props.socket.on(constants.PROCESSES_LIST, (data) => dispatch(assignProcesses(data)))
+
+      // this.props.socket.on('message.chat2', this.handleMessage)
+      // this.props.socket.on('message.chat1', this.handleOtherMessage)
       this.setState({ subscribed: true })
     }
   }
@@ -51,6 +71,10 @@ class ChatTwo extends Component {
   }
 
   // add messages from server to the state
+  consoleOut = d => {
+    console.log(d)
+  }
+
   handleMessage = message => {
     this.setState(state => ({ messages: state.messages.concat(message) }))
   }
@@ -69,12 +93,16 @@ class ChatTwo extends Component {
 
     // create message object
     const message = {
-      id: new Date().getTime(),
-      value: this.state.field
+      type: 'defined',
+      task_id: 'easy mode',
+      project_id: 'example',
+      command: "ruby",
+      cwd: "/Users/jakub/next-parrot",
+      args: ["hello.rb"]
     }
 
     // send object to WS server
-    this.props.socket.emit('message.chat2', message)
+    this.props.socket.emit(constants.START_PROCESS, message)
 
     // add it to state and clean current input value
     this.setState(state => ({
@@ -118,4 +146,4 @@ class ChatTwo extends Component {
   }
 }
 
-export default ChatTwo
+export default connect()(ChatTwo)

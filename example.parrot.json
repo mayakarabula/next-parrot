@@ -1,4 +1,19 @@
 {
-    "name": "example",
-    "tasks": []
+    "id": "example",
+    "name": "Example Project",
+    "tasks": {
+        "defined": [
+            {
+                "id": "easy mode",
+                "name": "easy mode",
+                "env_params": {
+                    "fields": ["a"]
+                },
+                "command": "ruby",
+                "cwd": "/Users/jakub/next-parrot",
+                "args": ["hello.rb"]
+            }
+        ],
+        "quick": []
+    }
 }

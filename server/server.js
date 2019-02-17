@@ -7,7 +7,11 @@ const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const nextHandler = nextApp.getRequestHandler()
-const processController = require('./startProcess')
+const processController = require('./processController')
+const projectsController = require('./projectsController')
+const constants = require('../shared/constants')
+const errorHandler = require('./errorHandler')
+const messagesHandler = require('./messagesHandler')
 
 // fake DB
 const messages = {
@@ -15,25 +19,37 @@ const messages = {
   chat2: []
 }
 
+const projects = projectsController.constructProjects()
+errorHandler.setIo(io)
+messagesHandler.setIo(io)
+
 // socket.io server
 io.on('connection', socket => {
+  console.log('=== CONNECTED')
+  socket.join(constants.PROCESSES_CHANNEL)
+  socket.join(constants.GENERAL_CHANNEL)
 
-  socket.join('processes');
+  socket.emit(constants.PROJECTS_LIST, projects)
 
-  socket.on('START', data => {
-    console.log('got it hereeeee')
-    processController(io).runProcess(data)
+  processController.listProcesses()
+
+  socket.on(constants.GET_PROJECTS, () => {
+    socket.to(constants.GENERAL_CHANNEL).emit(constants.PROJECTS_LIST, projects)
   })
 
-  socket.on('message.chat1', data => {
-    messages['chat1'].push(data)
-    socket.broadcast.emit('message.chat1', data)
+  socket.on(constants.START_PROCESS, data => {
+    processController.runProcess(data)
   })
-  
-  socket.on('message.chat2', data => {
-    messages['chat2'].push(data)
-    socket.broadcast.emit('message.chat2', data)
-  })
+
+  // socket.on('message.chat1', data => {
+  //   messages['chat1'].push(data)
+  //   socket.broadcast.emit('message.chat1', data)
+  // })
+
+  // socket.on('message.chat2', data => {
+  //   messages['chat2'].push(data)
+  //   socket.broadcast.emit('message.chat2', data)
+  // })
 
 })
 
