@@ -55,7 +55,7 @@ const listProcesses = () => {
             })
         })
 
-        messagesHandler.processes(constants.PROCESSES_LIST, { processes })
+        messagesHandler.processes(constants.PROCESSES_LIST, processes)
     }, 5000)
 }
 
@@ -84,7 +84,7 @@ const runProcess = (config) => {
     const proc = spawn(command, args, { env, cwd } );
     const procData = { task_id, project_id, type, pid: proc.pid, cwd, args, env_params, status: constants.PROCESS_STARTED }
 
-    messagesHandler.processes(constants.START_PROCESS, { procData })
+    messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]', time: Date.now() })
 
     proc.stdout.on('data', (data) => {
         messagesHandler.processes(constants.STDOUT, { pid: proc.pid, data: data.toString(), time: Date.now() })

@@ -43,7 +43,6 @@ export const reducer = (state = initialState, action) => {
         ...(STDERR[payload.pid] || []),
         { data: payload.data, time: payload.time }
       ]
-
       return Object.assign({}, state, { STDERR })
     default:
       return state
