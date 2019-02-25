@@ -12,32 +12,74 @@ const processes = []
 const std_out = {}
 const std_err = {}
 
+const verifyQuickTask = (task, config) => {
+    const { env_params, command, cwd, args } = config
+
+    if (env_params) {
+       const validEnv =  isEqual(
+            intersection(Object.keys(env_params), task.fields),
+            Object.keys(env_params)
+        )
+        if (!validEnv) {
+            return false
+        }
+    }
+    if (command && task.command !== command) {
+        return false
+    }
+    if (args && args !== task.args) {
+        return false
+    }
+    if (cwd && task.cwd !== cwd) {
+        return false
+    }
+
+    return true
+}
+
+const verifyDefinedTask = (task, config) => {
+    const { env_params = {}, command, cwd } = config
+    
+    if (env_params) {
+        const validEnv =  isEqual(
+             intersection(Object.keys(env_params), task.fields),
+             Object.keys(env_params)
+         )
+         if (!validEnv) {
+             return false
+         }
+     }
+    if (command && task.command !== command) {
+        return false
+    }
+    if (cwd && task.cwd !== cwd) {
+        return false
+    }
+
+    return true
+}
+
 const verifyTask = (config) => {
-    const { task_id, project_id, type, env_params = {}, command, cwd, args } = config
+    const { task_id, project_id, type } = config
 
     const taskGetters = {
         defined: projectsController.getDefinedTask,
         quick: projectsController.getQuickTasks
     }
 
-    if (!type || !task_id || !project_id || !command || !cwd) {
-        errorHandler.error('ERROR! Parameters passed are invalid.')
-
+    if (!task_id || !project_id || !type ) {
         return false
     }
 
     const task = taskGetters[type]({ id: project_id })({ id: task_id })
 
-    const envParamsValid = isEqual(
-        intersection(Object.keys(env_params), task.fields),
-        Object.keys(env_params)
-    )
-    const commandValid = task.command === command
-    const cwdValid = task.cwd === cwd
-    const argsValid = (type !== 'quick') || args === task.args
+    const taskVerification = {
+        defined: verifyDefinedTask,
+        quick: verifyQuickTask,
+    }
 
-    if (envParamsValid && commandValid && cwdValid && argsValid) {
-        return config
+    if (taskVerification[type](task, config)) {
+        return { ...config, ...task }
     } else {
         errorHandler.error('ERROR! Parameters passed are incosistent with the task definition!')
 
@@ -78,10 +120,22 @@ const runProcess = (config) => {
         return false
     }
 
-    const { task_id, project_id, type, env_params, command, cwd, args } = config
+    console.log(task)
+
+    const { task_id, project_id, type, env_params, command, cwd, args } = task
 
     const env = { ...process.env, ...env_params };
-    const proc = spawn(command, args, { env, cwd } );
+    let proc;
+
+    proc = spawn(command, args, { env, cwd } );
+
+    proc.on('error', (error) => {
+        errorHandler.error('ERROR! Process was not started! Message: ' + error.toString())
+    })
+    if (!proc.pid) {
+        return false
+    }
+
     const procData = { task_id, project_id, type, pid: proc.pid, cwd, args, env_params, status: constants.PROCESS_STARTED }
 
     messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]', time: Date.now() })

@@ -96,8 +96,9 @@ class ChatTwo extends Component {
       type: 'defined',
       task_id: 'easy mode',
       project_id: 'example',
-      command: "ruby",
-      cwd: "/Users/jakub/next-parrot",
+      // command: "ruby",
+      // env_params: {},
+      // cwd: "/home/jakub/parrot-next",
       args: ["hello.rb"]
     }
 
