@@ -4,6 +4,11 @@
 - [ ] Allow to run tasks in queue / pipe
 - [ ] Allow to send data to STDIN
 - [ ] Allow connections between server Parrot instances
+- [ ] Start with UI
+- [ ] Add forms based on JSON Schema
+- [ ] Add charts
+- [ ] Add custom actions in tables
+- [ ] Add plugins module
 
 ## How To
 - To install use `yarn` or `npm i`
