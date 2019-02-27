@@ -1,3 +1,4 @@
+![mit license](https://img.shields.io/badge/license-MIT-green.svg)
 # AutoParrot 🦜
 
 ## To Do
