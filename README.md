@@ -1,4 +1,4 @@
-# AutoParrot
+# AutoParrot 🦜
 
 ## To Do
 - [ ] Allow to run tasks in queue / pipe
