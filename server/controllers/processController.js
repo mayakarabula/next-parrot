@@ -1,10 +1,10 @@
 const { spawn }  = require('child_process')
 const pidusage = require('pidusage')
-const constants = require('../shared/constants')
-const errorHandler = require('./errorHandler')
+const constants = require('../../shared/constants')
+const errorHandler = require('../logging/errorHandler')
 const modelController = require('./modelController')
-const messagesHandler = require('./messagesHandler')
-const verifyTask = require('./tasks/verifyTask').default
+const messagesHandler = require('../logging/messagesHandler')
+const verifyTask = require('../tasks/verifyTask').default
 
 const processes = []
 const std_out = {}
@@ -37,7 +37,7 @@ const rerunProcess = (pid) => {
     }
 }
 
-const runProcess = (config) => {
+const runProcess = (config, callbacks) => {
     const task = verifyTask(config)
     if (!task) {
         return false
@@ -66,6 +66,10 @@ const runProcess = (config) => {
     proc.stdout.on('data', (data) => {
         messagesHandler.processes(constants.STDOUT, { pid: proc.pid, data: data.toString(), time: Date.now() })
 
+        if (callbacks.stdoutCallback) {
+            callbacks.stdoutCallback(data)
+        }
+
         if (std_out[proc.pid]) {
             std_out[proc.pid].push(data.toString())
         } else {
@@ -75,6 +79,10 @@ const runProcess = (config) => {
 
     proc.stderr.on('data', (data) => {
         messagesHandler.processes(constants.STDERR, { pid: proc.pid, data: data.toString(), time: Date.now() })
+
+        if (callbacks.stderrCallback) {
+            callbacks.stderrCallback(data)
+        }
 
         if (std_err[proc.pid]) {
             std_err[proc.pid].push(data.toString())
@@ -86,6 +94,10 @@ const runProcess = (config) => {
     proc.on('close', (data) => {
         messagesHandler.processes(constants.PROCESS_FINISHED, { pid: proc.pid, data: `[PROCESS HAS STOPPED WITH STATUS: ${data}]`, time: Date.now() })
         procData.status = constants.PROCESS_FINISHED
+
+        if (callbacks.onCloseCallback) {
+            callbacks.onCloseCallback(data)
+        }
     });
 
     processes.push(procData)

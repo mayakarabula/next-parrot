@@ -1,4 +1,4 @@
-const constants = require('../shared/constants')
+const constants = require('../../shared/constants')
 
 let io = null
 const setIo = (_io) => { io = _io }

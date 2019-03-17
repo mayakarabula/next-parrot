@@ -1,5 +1,5 @@
 ![mit license](https://img.shields.io/badge/license-MIT-green.svg)
-# AutoParrot 🦜
+# AutoParrot
 
 ## To Do
 - [ ] Allow to run tasks in queue / pipe

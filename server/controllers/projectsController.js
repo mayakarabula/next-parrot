@@ -1,7 +1,7 @@
 const has = require('lodash/has')
-const projectsFileHelper = require('./projectsFileHelper')
+const projectsFileHelper = require('../helpers/projectsFileHelper')
 const modelController = require('./modelController')
-const errorHandler = require('./errorHandler')
+const errorHandler = require('../logging/errorHandler')
 
 const PROPERTIES = ['name', 'tasks.defined', 'tasks.quick']
 
@@ -52,10 +52,16 @@ const getQuickTasks = (filters) => {
     return modelController.getPart(project)('tasks.quick', [])
 }
 
+const getQueueTasks = (filters) => {
+    const project = getProject(filters)
+    return modelController.getPart(project)('tasks.queue', [])
+}
+
 module.exports = {
     constructProjects,
     getProject,
     getDefinedTasks,
     getDefinedTask,
-    getQuickTasks
+    getQuickTasks,
+    getQueueTasks
 }

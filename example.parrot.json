@@ -10,10 +10,33 @@
                     "fields": ["a"]
                 },
                 "command": "ruby",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot/parrot-next",
                 "args": ["hello.rb"]
             }
         ],
-        "quick": []
+        "quick": [
+            {
+                "id": "easy and quick",
+                "name": "easy and quick",
+                "env_params": {
+                    "fields": ["a"]
+                },
+                "command": "ruby",
+                "cwd": "/Users/jakub/next-parrot/parrot-next",
+                "args": ["hello.rb"]
+            }
+        ],
+        "queue": [
+            {
+                "id" : "easy queue",
+                "name" : "",
+                "pipe": true,
+                "parallel": false,
+                "tasks": [
+                    { "id": "easy mode", "type": "defined" },
+                    { "id": "easy and quick", "type": "quick" }
+                ]
+            }
+        ]
     }
 }

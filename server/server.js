@@ -7,11 +7,11 @@ const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const nextHandler = nextApp.getRequestHandler()
-const processController = require('./processController')
-const projectsController = require('./projectsController')
+const processController = require('./controllers/processController')
+const projectsController = require('./controllers/projectsController')
 const constants = require('../shared/constants')
-const errorHandler = require('./errorHandler')
-const messagesHandler = require('./messagesHandler')
+const errorHandler = require('./logging/errorHandler')
+const messagesHandler = require('./logging/messagesHandler')
 
 // fake DB
 const messages = {
