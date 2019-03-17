@@ -88,14 +88,14 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./pages/clone.js":
+/***/ "./pages/index.js":
 /*!************************!*\
-  !*** ./pages/clone.js ***!
+  !*** ./pages/index.js ***!
   \************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -110,11 +110,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! isomorphic-unfetch */ "isomorphic-unfetch");
 /* harmony import */ var isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _shared_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/constants */ "./shared/constants.js");
-/* harmony import */ var _shared_constants__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_shared_constants__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../redux/actions */ "./redux/actions.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-redux */ "react-redux");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_6__);
 
 
 
@@ -146,26 +141,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-
-
-var ChatTwo =
+var ChatOne =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(ChatTwo, _Component);
+  _inherits(ChatOne, _Component);
 
-  function ChatTwo() {
+  function ChatOne() {
     var _getPrototypeOf2;
 
     var _this;
 
-    _classCallCheck(this, ChatTwo);
+    _classCallCheck(this, ChatOne);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ChatTwo)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ChatOne)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
       field: '',
@@ -178,38 +170,11 @@ function (_Component) {
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "subscribe", function () {
       if (_this.state.subscribe && !_this.state.subscribed) {
         // connect to WS server and listen event
-        var dispatch = _this.props.dispatch;
-        console.log('should subscribe');
+        _this.props.socket.on('STDOUT', _this.handleMessage);
 
-        _this.props.socket.on(_shared_constants__WEBPACK_IMPORTED_MODULE_4___default.a.PROJECTS_LIST, function (data) {
-          return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_5__["assignProjects"])(data));
-        });
+        _this.props.socket.on('STDERR', _this.handleMessage);
 
-        _this.props.socket.on(_shared_constants__WEBPACK_IMPORTED_MODULE_4___default.a.GENERAL_ERROR, function (data) {
-          return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_5__["assignErrors"])(data));
-        });
-
-        _this.props.socket.on(_shared_constants__WEBPACK_IMPORTED_MODULE_4___default.a.STDOUT, function (data) {
-          return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_5__["assignSTDOUT"])(data));
-        });
-
-        _this.props.socket.on(_shared_constants__WEBPACK_IMPORTED_MODULE_4___default.a.STDERR, function (data) {
-          return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_5__["assignSTDERR"])(data));
-        });
-
-        _this.props.socket.on(_shared_constants__WEBPACK_IMPORTED_MODULE_4___default.a.PROCESS_FINISHED, function (data) {
-          return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_5__["assignSTDOUT"])(data));
-        });
-
-        _this.props.socket.on(_shared_constants__WEBPACK_IMPORTED_MODULE_4___default.a.START_PROCESS, function (data) {
-          return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_5__["assignSTDOUT"])(data));
-        });
-
-        _this.props.socket.on(_shared_constants__WEBPACK_IMPORTED_MODULE_4___default.a.PROCESSES_LIST, function (data) {
-          return dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_5__["assignProcesses"])(data));
-        }); // this.props.socket.on('message.chat2', this.handleMessage)
-        // this.props.socket.on('message.chat1', this.handleOtherMessage)
-
+        _this.props.socket.on('START_PROCESS', _this.handleMessage);
 
         _this.setState({
           subscribed: true
@@ -217,24 +182,12 @@ function (_Component) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "consoleOut", function (d) {
-      console.log(d);
-    });
-
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleMessage", function (message) {
-      _this.setState(function (state) {
-        return {
-          messages: state.messages.concat(message)
-        };
-      });
+      console.log(message); // this.setState(state => ({ messages: state.messages.concat(message) }))
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleOtherMessage", function () {
-      _this.setState(function (prevState) {
-        return {
-          newMessage: prevState.newMessage + 1
-        };
-      });
+      t; //his.setState(prevState => ({ newMessage: prevState.newMessage + 1 }))
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleChange", function (event) {
@@ -245,33 +198,24 @@ function (_Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSubmit", function (event) {
       event.preventDefault(); // create message object
+      // const message = {
+      //   id: new Date().getTime(),
+      //   value: this.state.field
+      // }
+      // send object to WS server
 
-      var message = {
-        type: 'defined',
-        task_id: 'easy mode',
-        project_id: 'example',
-        // command: "ruby",
-        // env_params: {},
-        // cwd: "/home/jakub/parrot-next",
-        args: ["hello.rb"] // send object to WS server
+      _this.props.socket.emit('START', {}); // add it to state and clean current input value
+      // this.setState(state => ({
+      //   field: '',
+      //   messages: state.messages.concat(message)
+      // }))
 
-      };
-
-      _this.props.socket.emit(_shared_constants__WEBPACK_IMPORTED_MODULE_4___default.a.START_PROCESS, message); // add it to state and clean current input value
-
-
-      _this.setState(function (state) {
-        return {
-          field: '',
-          messages: state.messages.concat(message)
-        };
-      });
     });
 
     return _this;
   }
 
-  _createClass(ChatTwo, [{
+  _createClass(ChatOne, [{
     key: "componentDidMount",
     value: function componentDidMount() {
       this.subscribe();
@@ -285,8 +229,9 @@ function (_Component) {
     key: "componentWillUnmount",
     // close socket connection
     value: function componentWillUnmount() {
-      this.props.socket.off('message.chat1', this.handleOtherMessage);
-      this.props.socket.off('message.chat2', this.handleMessage);
+      this.props.socket.off('STDOUT', this.handleMessage);
+      this.props.socket.off('STDERR', this.handleMessage);
+      this.props.socket.off('START_PROCESS', this.handleMessage);
     } // add messages from server to the state
 
   }, {
@@ -296,9 +241,9 @@ function (_Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("main", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
         href: '/'
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", null, "Chat One ".concat(this.state.newMessage > 0 ? "( ".concat(this.state.newMessage, " new message )") : ''))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", null, 'Chat One')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
         href: '/clone'
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", null, 'Chat Two')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", null, this.state.messages.map(function (message) {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", null, "Chat Two ".concat(this.state.newMessage > 0 ? "( ".concat(this.state.newMessage, " new message )") : ''))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", null, this.state.messages.map(function (message) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
           key: message.id
         }, message.value);
@@ -327,7 +272,7 @@ function (_Component) {
               case 0:
                 req = _ref.req;
                 _context.next = 3;
-                return isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3___default()('http://localhost:3000/messages/chat2');
+                return isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_3___default()('http://localhost:3000/messages/chat1');
 
               case 3:
                 response = _context.sent;
@@ -364,119 +309,26 @@ function (_Component) {
     }
   }]);
 
-  return ChatTwo;
+  return ChatOne;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
-_defineProperty(ChatTwo, "defaultProps", {
+_defineProperty(ChatOne, "defaultProps", {
   messages: [] // init state with the prefetched messages
 
 });
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["connect"])()(ChatTwo));
+/* harmony default export */ __webpack_exports__["default"] = (ChatOne);
 
 /***/ }),
 
-/***/ "./redux/actionTypes.js":
+/***/ 3:
 /*!******************************!*\
-  !*** ./redux/actionTypes.js ***!
-  \******************************/
-/*! exports provided: actionTypes */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "actionTypes", function() { return actionTypes; });
-var actionTypes = {
-  ASSIGN_PROCESSES: 'ASSIGN_PROCESSES',
-  ASSIGN_PROJECTS: 'ASSIGN_PROJECTS',
-  ASSIGN_STDOUT: 'ASSIGN_STDOUT',
-  ASSIGN_STDERR: 'ASSIGN_STDERR',
-  ASSIGN_ERRORS: 'ASSIGN_ERRORS'
-};
-
-/***/ }),
-
-/***/ "./redux/actions.js":
-/*!**************************!*\
-  !*** ./redux/actions.js ***!
-  \**************************/
-/*! exports provided: assignProjects, assignProcesses, assignSTDOUT, assignSTDERR, assignErrors */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignProjects", function() { return assignProjects; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignProcesses", function() { return assignProcesses; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignSTDOUT", function() { return assignSTDOUT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignSTDERR", function() { return assignSTDERR; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignErrors", function() { return assignErrors; });
-/* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actionTypes */ "./redux/actionTypes.js");
- // ACTIONS
-
-var assignProjects = function assignProjects(projects) {
-  return {
-    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["actionTypes"].ASSIGN_PROJECTS,
-    payload: projects
-  };
-};
-var assignProcesses = function assignProcesses(processes) {
-  return {
-    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["actionTypes"].ASSIGN_PROCESSES,
-    payload: processes
-  };
-};
-var assignSTDOUT = function assignSTDOUT(stdout) {
-  return {
-    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["actionTypes"].ASSIGN_STDOUT,
-    payload: stdout
-  };
-};
-var assignSTDERR = function assignSTDERR(stderr) {
-  return {
-    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["actionTypes"].ASSIGN_STDERR,
-    payload: stderr
-  };
-};
-var assignErrors = function assignErrors(errors) {
-  return {
-    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["actionTypes"].ASSIGN_ERRORS,
-    payload: errors
-  };
-};
-
-/***/ }),
-
-/***/ "./shared/constants.js":
-/*!*****************************!*\
-  !*** ./shared/constants.js ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  PROCESSES_CHANNEL: 'PROCESSES_CHANNEL',
-  GENERAL_CHANNEL: 'GENERAL_CHANNEL',
-  GENERAL_ERROR: 'GENERAL_ERROR',
-  GET_PROJECTS: 'GET_PROJECTS',
-  PROJECTS_LIST: 'PROJECTS_LIST',
-  START_PROCESS: 'START_PROCESS',
-  PROCESSES_LIST: 'PROCESSES_LIST',
-  PROCESS_STARTED: 'PROCESS_STARTED',
-  PROCESS_FINISHED: 'PROCESS_FINISHED',
-  STDOUT: 'STDOUT',
-  STDERR: 'STDERR'
-};
-
-/***/ }),
-
-/***/ 4:
-/*!******************************!*\
-  !*** multi ./pages/clone.js ***!
+  !*** multi ./pages/index.js ***!
   \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! ./pages/clone.js */"./pages/clone.js");
+module.exports = __webpack_require__(/*! ./pages/index.js */"./pages/index.js");
 
 
 /***/ }),
@@ -523,18 +375,7 @@ module.exports = require("next/link");
 
 module.exports = require("react");
 
-/***/ }),
-
-/***/ "react-redux":
-/*!******************************!*\
-  !*** external "react-redux" ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("react-redux");
-
 /***/ })
 
 /******/ });
-//# sourceMappingURL=clone.js.map
+//# sourceMappingURL=index.js.map

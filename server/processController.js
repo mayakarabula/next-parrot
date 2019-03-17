@@ -1,91 +1,14 @@
 const { spawn }  = require('child_process')
-const isEqual = require('lodash/isEqual')
-const intersection = require('lodash/intersection')
 const pidusage = require('pidusage')
 const constants = require('../shared/constants')
-const projectsController = require('./projectsController')
 const errorHandler = require('./errorHandler')
 const modelController = require('./modelController')
 const messagesHandler = require('./messagesHandler')
+const verifyTask = require('./tasks/verifyTask').default
 
 const processes = []
 const std_out = {}
 const std_err = {}
-
-const verifyQuickTask = (task, config) => {
-    const { env_params, command, cwd, args } = config
-
-    if (env_params) {
-       const validEnv =  isEqual(
-            intersection(Object.keys(env_params), task.fields),
-            Object.keys(env_params)
-        )
-        if (!validEnv) {
-            return false
-        }
-    }
-    if (command && task.command !== command) {
-        return false
-    }
-    if (args && args !== task.args) {
-        return false
-    }
-    if (cwd && task.cwd !== cwd) {
-        return false
-    }
-
-    return true
-}
-
-const verifyDefinedTask = (task, config) => {
-    const { env_params = {}, command, cwd } = config
-    
-    if (env_params) {
-        const validEnv =  isEqual(
-             intersection(Object.keys(env_params), task.fields),
-             Object.keys(env_params)
-         )
-         if (!validEnv) {
-             return false
-         }
-     }
-    if (command && task.command !== command) {
-        return false
-    }
-    if (cwd && task.cwd !== cwd) {
-        return false
-    }
-
-    return true
-}
-
-const verifyTask = (config) => {
-    const { task_id, project_id, type } = config
-
-    const taskGetters = {
-        defined: projectsController.getDefinedTask,
-        quick: projectsController.getQuickTasks
-    }
-
-    if (!task_id || !project_id || !type ) {
-        return false
-    }
-
-    const task = taskGetters[type]({ id: project_id })({ id: task_id })
-
-    const taskVerification = {
-        defined: verifyDefinedTask,
-        quick: verifyQuickTask,
-    }
-
-    if (taskVerification[type](task, config)) {
-        return { ...config, ...task }
-    } else {
-        errorHandler.error('ERROR! Parameters passed are incosistent with the task definition!')
-
-        return false
-    }
-}
 
 const listProcesses = () => {
     setInterval(() => {
