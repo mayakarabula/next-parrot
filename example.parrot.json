@@ -33,7 +33,6 @@
                 "pipe": true,
                 "parallel": false,
                 "tasks": [
-                    { "id": "easy mode", "type": "defined" },
                     { "id": "easy and quick", "type": "quick" }
                 ]
             }

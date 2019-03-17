@@ -3,7 +3,7 @@ const projectsFileHelper = require('../helpers/projectsFileHelper')
 const modelController = require('./modelController')
 const errorHandler = require('../logging/errorHandler')
 
-const PROPERTIES = ['name', 'tasks.defined', 'tasks.quick']
+const PROPERTIES = ['name', 'tasks.defined', 'tasks.quick', 'tasks.queue']
 
 let projects = []
 

@@ -37,6 +37,16 @@ const rerunProcess = (pid) => {
     }
 }
 
+const prepareProcess = (config) => {
+    const { task_id, project_id, type } = task
+
+    if (type === 'queue') {
+        
+    } else {
+        runProcess(config)
+    }
+}
+
 const runProcess = (config, callbacks) => {
     const task = verifyTask(config)
     if (!task) {
