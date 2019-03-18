@@ -4,6 +4,7 @@
 ## To Do
 - [ ] Allow to run tasks in queue / pipe
 - [ ] Allow to send data to STDIN
+- [ ] Allow custom statuses dependent on STDOUT
 - [ ] Allow connections between server Parrot instances
 - [ ] Start with UI
 - [ ] Add forms based on JSON Schema
