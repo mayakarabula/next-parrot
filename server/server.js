@@ -38,7 +38,7 @@ io.on('connection', socket => {
   })
 
   socket.on(constants.START_PROCESS, data => {
-    processController.runProcess(data)
+    processController.prepareProcess(data)
   })
 
   // socket.on('message.chat1', data => {

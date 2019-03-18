@@ -52,9 +52,17 @@ const getQuickTasks = (filters) => {
     return modelController.getPart(project)('tasks.quick', [])
 }
 
+const getQuickTask = (projectFilters) => (taskFilters) => {
+    return modelController.getElement(getQuickTasks(projectFilters))(taskFilters, {})
+}
+
 const getQueueTasks = (filters) => {
     const project = getProject(filters)
     return modelController.getPart(project)('tasks.queue', [])
+}
+
+const getQueueTask = (projectFilters) => (taskFilters) => {
+    return modelController.getElement(getQueueTasks(projectFilters))(taskFilters, {})
 }
 
 module.exports = {
@@ -63,5 +71,7 @@ module.exports = {
     getDefinedTasks,
     getDefinedTask,
     getQuickTasks,
-    getQueueTasks
+    getQuickTask,
+    getQueueTasks,
+    getQueueTask
 }

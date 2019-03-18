@@ -38,21 +38,29 @@ const rerunProcess = (pid) => {
 }
 
 const prepareProcess = (config) => {
-    const { task_id, project_id, type } = task
+    const { project_id, type } = config
 
-    if (type === 'queue') {
-        
-    } else {
-        runProcess(config)
-    }
-}
-
-const runProcess = (config, callbacks) => {
     const task = verifyTask(config)
     if (!task) {
         return false
     }
 
+    if (type === 'queue') {
+        const { tasks } = task
+
+        tasks.forEach((subTask) => {
+            const contexedTask = verifyTask({ project_id, queue: true, ...subTask })
+
+            if (contexedTask) {
+                runProcess(contexedTask)
+            }
+        })
+    } else {
+        runProcess(task)
+    }
+}
+
+const runProcess = (task, callbacks = {}) => {
     console.log(task)
 
     const { task_id, project_id, type, env_params, command, cwd, args } = task
@@ -117,6 +125,7 @@ const runProcess = (config, callbacks) => {
 
 module.exports = ({
     runProcess,
+    prepareProcess,
     listProcesses,
     rerunProcess,
     killProcess

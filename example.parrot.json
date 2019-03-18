@@ -10,7 +10,7 @@
                     "fields": ["a"]
                 },
                 "command": "ruby",
-                "cwd": "/Users/jakub/next-parrot/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["hello.rb"]
             }
         ],
@@ -21,9 +21,9 @@
                 "env_params": {
                     "fields": ["a"]
                 },
-                "command": "ruby",
-                "cwd": "/Users/jakub/next-parrot/parrot-next",
-                "args": ["hello.rb"]
+                "command": "node",
+                "cwd": "/Users/jakub/next-parrot",
+                "args": ["hello.js"]
             }
         ],
         "queue": [
@@ -33,7 +33,8 @@
                 "pipe": true,
                 "parallel": false,
                 "tasks": [
-                    { "id": "easy and quick", "type": "quick" }
+                    { "task_id": "easy and quick", "type": "quick" },
+                    { "task_id": "easy and quick", "type": "quick" }
                 ]
             }
         ]

@@ -1,4 +1,4 @@
-var config = require('../parrot.json');
+var config = require('../../parrot.json');
 
 const constructProjects = () => {
   const projects = []

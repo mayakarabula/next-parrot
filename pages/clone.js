@@ -88,7 +88,7 @@ class ChatTwo extends Component {
   }
 
   // send messages to server and add them to the state
-  handleSubmit = event => {
+  sendDefined = event => {
     event.preventDefault()
 
     // create message object
@@ -100,6 +100,46 @@ class ChatTwo extends Component {
       // env_params: {},
       // cwd: "/home/jakub/parrot-next",
       args: ["hello.rb"]
+    }
+
+    // send object to WS server
+    this.props.socket.emit(constants.START_PROCESS, message)
+
+    // add it to state and clean current input value
+    this.setState(state => ({
+      field: '',
+      messages: state.messages.concat(message)
+    }))
+  }
+
+  sendQuick = event => {
+    event.preventDefault()
+
+    // create message object
+    const message = {
+      type: 'quick',
+      task_id: 'easy and quick',
+      project_id: 'example',
+    }
+
+    // send object to WS server
+    this.props.socket.emit(constants.START_PROCESS, message)
+
+    // add it to state and clean current input value
+    this.setState(state => ({
+      field: '',
+      messages: state.messages.concat(message)
+    }))
+  }
+
+  sendQueue = event => {
+    event.preventDefault()
+
+    // create message object
+    const message = {
+      type: 'queue',
+      task_id: 'easy queue',
+      project_id: 'example',
     }
 
     // send object to WS server
@@ -132,7 +172,7 @@ class ChatTwo extends Component {
               <li key={message.id}>{message.value}</li>
             ))}
           </ul>
-          <form onSubmit={e => this.handleSubmit(e)}>
+          <form onSubmit={e => this.sendDefined(e)}>
             <input
               onChange={this.handleChange}
               type='text'
@@ -141,6 +181,10 @@ class ChatTwo extends Component {
             />
             <button>Send</button>
           </form>
+          <br/>
+          <button onClick={this.sendDefined}>defined</button>
+          <button onClick={this.sendQuick}>quick</button>
+          <button onClick={this.sendQueue}>queue</button>
         </div>
       </main>
     )
