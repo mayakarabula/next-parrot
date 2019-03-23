@@ -9,9 +9,9 @@
                 "env_params": {
                     "fields": ["a"]
                 },
-                "command": "ruby",
-                "cwd": "/Users/jakub/next-parrot",
-                "args": ["hello.rb"]
+                "command": "node",
+                "cwd": "/home/jakub/parrot-next",
+                "args": ["hello.js"]
             }
         ],
         "quick": [
@@ -21,9 +21,9 @@
                 "env_params": {
                     "fields": ["a"]
                 },
-                "command": "node",
-                "cwd": "/Users/jakub/next-parrot",
-                "args": ["hello.js"]
+                "command": "ruby",
+                "cwd": "/home/jakub/parrot-next",
+                "args": ["hello.rb"]
             }
         ],
         "queue": [

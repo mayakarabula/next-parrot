@@ -1,10 +1,12 @@
 const { spawn }  = require('child_process')
+const readline      = require('readline');
 const pidusage = require('pidusage')
 const constants = require('../../shared/constants')
 const errorHandler = require('../logging/errorHandler')
 const modelController = require('./modelController')
 const messagesHandler = require('../logging/messagesHandler')
 const verifyTask = require('../tasks/verifyTask').default
+const uuidv4 = require('uuid/v4');
 
 const processes = []
 const std_out = {}
@@ -20,7 +22,7 @@ const listProcesses = () => {
             })
         })
 
-        messagesHandler.processes(constants.PROCESSES_LIST, processes)
+        // messagesHandler.processes(constants.PROCESSES_LIST, processes)
     }, 5000)
 }
 
@@ -37,7 +39,7 @@ const rerunProcess = (pid) => {
     }
 }
 
-const prepareProcess = (config) => {
+const prepareProcess = async (config) => {
     const { project_id, type } = config
 
     const task = verifyTask(config)
@@ -46,29 +48,43 @@ const prepareProcess = (config) => {
     }
 
     if (type === 'queue') {
-        const { tasks } = task
+        const { tasks, id: queue_id, parallel } = task
+        const queue_uuid = uuidv4()
 
-        tasks.forEach((subTask) => {
-            const contexedTask = verifyTask({ project_id, queue: true, ...subTask })
+        for (subTask of tasks) {
+            const contexedTask = verifyTask({ project_id, queue_id, queue_uuid, ...subTask })
 
             if (contexedTask) {
-                runProcess(contexedTask)
+                if (parallel) {
+                    console.log('run in parallel')
+                    runProcess(contexedTask)
+                } else {
+                    console.log('should run')
+                    const waitForProc = () => new Promise((resolve, reject) => {
+                        console.log('run in sequence')
+                        const callbacks = {
+                            onCloseCallback: resolve
+                         }
+                        runProcess(contexedTask, callbacks)
+                    })
+                    await waitForProc()
+                }
             }
-        })
-    } else {
-        runProcess(task)
+        }
     }
 }
 
 const runProcess = (task, callbacks = {}) => {
     console.log(task)
 
-    const { task_id, project_id, type, env_params, command, cwd, args } = task
+    const { task_id, project_id, type, env_params, command, cwd, args, queue_id, queue_uuid } = task
 
     const env = { ...process.env, ...env_params };
     let proc;
 
     proc = spawn(command, args, { env, cwd } );
+
+    proc.unref();
 
     proc.on('error', (error) => {
         errorHandler.error('ERROR! Process was not started! Message: ' + error.toString())
@@ -77,9 +93,21 @@ const runProcess = (task, callbacks = {}) => {
         return false
     }
 
-    const procData = { task_id, project_id, type, pid: proc.pid, cwd, args, env_params, status: constants.PROCESS_STARTED }
+    const procData = {
+        task_id,
+        project_id,
+        queue_id,
+        queue_uuid,
+        type,
+        pid: proc.pid,
+        cwd,
+        args,
+        env_params,
+        status: constants.PROCESS_STARTED
+    }
 
     messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]', time: Date.now() })
+
 
     proc.stdout.on('data', (data) => {
         messagesHandler.processes(constants.STDOUT, { pid: proc.pid, data: data.toString(), time: Date.now() })

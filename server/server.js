@@ -41,6 +41,10 @@ io.on('connection', socket => {
     processController.prepareProcess(data)
   })
 
+  socket.on(constants.KILL_PROCESS, data => {
+    processController.killProcess(data)
+  })
+
   // socket.on('message.chat1', data => {
   //   messages['chat1'].push(data)
   //   socket.broadcast.emit('message.chat1', data)

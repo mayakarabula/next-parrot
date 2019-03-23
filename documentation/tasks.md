@@ -10,7 +10,7 @@ Example of config for defined task
         "fields": ["a"]
     },
     "command": "ruby",
-    "cwd": "/Users/jakub/next-parrot/parrot-next",
+    "cwd": "/home/jakub/parrot-next/parrot-next",
     "args": ["hello.rb"]
 }
 ```
