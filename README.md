@@ -3,7 +3,8 @@
 # AutoParrot
 
 ## To Do
-- [ ] Allow to run tasks in queue / pipe
+- [x] Allow to run tasks in queue
+   - [ ] Allow to pipe STDOUT to next task 
 - [ ] Allow to send data to STDIN
 - [ ] Allow custom statuses on STDOUT patterns
 - [ ] Allow action hooks on STDOUT patterns
