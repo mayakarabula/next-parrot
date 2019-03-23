@@ -1,4 +1,5 @@
 ![license](https://img.shields.io/github/license/jakubkarabula/next-parrot.svg)
+![last commit](https://img.shields.io/github/last-commit/jakubkarabula/next-parrot.svg)
 # AutoParrot
 
 ## To Do
