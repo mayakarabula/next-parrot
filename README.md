@@ -1,4 +1,4 @@
-![mit license](https://img.shields.io/badge/license-MIT-green.svg)
+![license](https://img.shields.io/github/license/jakubkarabula/next-parrot.svg)
 # AutoParrot
 
 ## To Do
