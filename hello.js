@@ -1,9 +1,5 @@
-let i = 0
-
-console.log('HELOOOOOOO', i)
-i += 1
+console.log('HELOOOOOOO', + new Date())
 
 setTimeout(() => {
-    console.log('HELOOOOOOO', i)
-    i += 1
+    console.log('HELOOOOOOO', + new Date())
 }, 1000)

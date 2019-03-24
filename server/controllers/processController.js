@@ -7,6 +7,8 @@ const modelController = require('./modelController')
 const messagesHandler = require('../logging/messagesHandler')
 const verifyTask = require('../tasks/verifyTask').default
 const uuidv4 = require('uuid/v4');
+const os = require('os');
+const find = require('lodash/find');
 
 const processes = []
 const std_out = {}
@@ -22,7 +24,7 @@ const listProcesses = () => {
             })
         })
 
-        // messagesHandler.processes(constants.PROCESSES_LIST, processes)
+        messagesHandler.processes(constants.PROCESSES_LIST, processes)
     }, 5000)
 }
 
@@ -48,43 +50,49 @@ const prepareProcess = async (config) => {
     }
 
     if (type === 'queue') {
-        const { tasks, id: queue_id, parallel } = task
+        const { tasks, id: queue_id, parallel, pipe } = task
         const queue_uuid = uuidv4()
+        let lastPid = null
 
         for (subTask of tasks) {
             const contexedTask = verifyTask({ project_id, queue_id, queue_uuid, ...subTask })
 
             if (contexedTask) {
                 if (parallel) {
-                    console.log('run in parallel')
                     runProcess(contexedTask)
                 } else {
-                    console.log('should run')
                     const waitForProc = () => new Promise((resolve, reject) => {
-                        console.log('run in sequence')
                         const callbacks = {
-                            onCloseCallback: resolve
+                            onCloseCallback: () => resolve()
                          }
-                        runProcess(contexedTask, callbacks)
+
+                        const child = runProcess(contexedTask, callbacks)
+
+                        // if (pipe && lastPid && std_out[lastPid]) {
+                        //     const messages = std_out[lastPid].join(os.EOL)
+                        //     child.proc.stdin.write(messages)
+                        // }
+
+                        lastPid = child.proc.pid
                     })
                     await waitForProc()
                 }
             }
         }
+    } else {
+        runProcess(task)
     }
 }
 
 const runProcess = (task, callbacks = {}) => {
     console.log(task)
 
-    const { task_id, project_id, type, env_params, command, cwd, args, queue_id, queue_uuid } = task
+    const { task_id, project_id, type, env_params, command, cwd, args, queue_id, queue_uuid, statuses } = task
 
     const env = { ...process.env, ...env_params };
     let proc;
 
     proc = spawn(command, args, { env, cwd } );
-
-    proc.unref();
 
     proc.on('error', (error) => {
         errorHandler.error('ERROR! Process was not started! Message: ' + error.toString())
@@ -108,32 +116,51 @@ const runProcess = (task, callbacks = {}) => {
 
     messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]', time: Date.now() })
 
+    const checkStatuses = (data) => {
+        if (statuses) {
+            statuses.forEach((status) => {
+                const isValid = status.regex ? RegExp(status.pattern).test(data) : data.includes(status.pattern)
 
-    proc.stdout.on('data', (data) => {
-        messagesHandler.processes(constants.STDOUT, { pid: proc.pid, data: data.toString(), time: Date.now() })
+                if (isValid) {
+                    procData.status = status.status
+                }
+            })
+        }
+    }
+
+    proc.stdout.on('data', (buffer) => {
+        const data = buffer.toString()
+
+        messagesHandler.processes(constants.STDOUT, { pid: proc.pid, data: data, time: Date.now() })
 
         if (callbacks.stdoutCallback) {
             callbacks.stdoutCallback(data)
         }
 
+        checkStatuses(data)
+
         if (std_out[proc.pid]) {
-            std_out[proc.pid].push(data.toString())
+            std_out[proc.pid].push(data)
         } else {
-            std_out[proc.pid] = [data.toString()]
+            std_out[proc.pid] = [data]
         }
     } );
 
-    proc.stderr.on('data', (data) => {
+    proc.stderr.on('data', (buffer) => {
+        const data = buffer.toString()
+
         messagesHandler.processes(constants.STDERR, { pid: proc.pid, data: data.toString(), time: Date.now() })
 
         if (callbacks.stderrCallback) {
             callbacks.stderrCallback(data)
         }
 
+        checkStatuses(data)
+
         if (std_err[proc.pid]) {
-            std_err[proc.pid].push(data.toString())
+            std_err[proc.pid].push(data)
         } else {
-            std_err[proc.pid] = [data.toString()]
+            std_err[proc.pid] = [data]
         }
     });
 
@@ -142,13 +169,13 @@ const runProcess = (task, callbacks = {}) => {
         procData.status = constants.PROCESS_FINISHED
 
         if (callbacks.onCloseCallback) {
-            callbacks.onCloseCallback(data)
+            callbacks.onCloseCallback(data, proc.pid)
         }
     });
 
     processes.push(procData)
 
-    return procData
+    return { procData, proc }
 }
 
 module.exports = ({

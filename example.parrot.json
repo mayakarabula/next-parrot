@@ -23,7 +23,24 @@
                 },
                 "command": "ruby",
                 "cwd": "/home/jakub/parrot-next",
-                "args": ["hello.rb"]
+                "args": ["hello.rb"],
+                "statuses": [
+                    {
+                        "pattern": "He[a-z]{2}o",
+                        "regex": true,
+                        "status": "He said hello!"
+                    }
+                ]
+            },
+            {
+                "id": "grep hello",
+                "name": "grep hello",
+                "env_params": {
+                    "fields": []
+                },
+                "command": "grep",
+                "cwd": "/home/jakub/parrot-next",
+                "args": ["Hello"]
             }
         ],
         "queue": [
