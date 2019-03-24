@@ -4,11 +4,10 @@
 
 ## To Do
 - [x] Allow to run tasks in queue
-   - [ ] Allow to pipe STDOUT to next task 
 - [ ] Allow to send data to STDIN
+   - [ ] Allow to pipe STDOUT in queue
 - [x] Allow custom statuses on STDOUT patterns
-- [ ] Allow action hooks on STDOUT patterns
-- [ ] Allow connections between server Parrot instances
+- [x] Allow action hooks on STDOUT patterns
 - [ ] Start with UI
 - [ ] Add forms based on JSON Schema
 - [ ] Add charts
@@ -18,6 +17,7 @@
 - [ ] Allow saving schemas in external sources (firebase?)
 - [ ] Add user login mechanism
 - [ ] Run tasks and manage per user
+- [ ] Allow connections between server Parrot instances
 
 ## How To
 - To install use `yarn` or `npm i`

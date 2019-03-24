@@ -16,6 +16,16 @@
         ],
         "quick": [
             {
+                "id": "easy mode",
+                "name": "easy mode",
+                "env_params": {
+                    "fields": ["a"]
+                },
+                "command": "node",
+                "cwd": "/home/jakub/parrot-next",
+                "args": ["hello.js"]
+            },
+            {
                 "id": "easy and quick",
                 "name": "easy and quick",
                 "env_params": {
@@ -24,13 +34,19 @@
                 "command": "ruby",
                 "cwd": "/home/jakub/parrot-next",
                 "args": ["hello.rb"],
-                "statuses": [
+                "hooks": [
                     {
-                        "pattern": "He[a-z]{2}o",
+                        "pattern": "ag[a-z]{2}n",
                         "regex": true,
-                        "status": "He said hello!"
+                        "status": "He said again!",
+                        "action": { "task_id": "easy mode", "type": "quick" }
+                    },
+                    {
+                        "pattern": "World",
+                        "status": "He said world!"
                     }
                 ]
+
             },
             {
                 "id": "grep hello",

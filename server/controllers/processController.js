@@ -45,6 +45,9 @@ const prepareProcess = async (config) => {
     const { project_id, type } = config
 
     const task = verifyTask(config)
+
+    console.log('got this task', config, task)
+
     if (!task) {
         return false
     }
@@ -87,7 +90,7 @@ const prepareProcess = async (config) => {
 const runProcess = (task, callbacks = {}) => {
     console.log(task)
 
-    const { task_id, project_id, type, env_params, command, cwd, args, queue_id, queue_uuid, statuses } = task
+    const { task_id, project_id, type, env_params, command, cwd, args, queue_id, queue_uuid, parent_pid, hooks } = task
 
     const env = { ...process.env, ...env_params };
     let proc;
@@ -106,6 +109,7 @@ const runProcess = (task, callbacks = {}) => {
         project_id,
         queue_id,
         queue_uuid,
+        parent_pid,
         type,
         pid: proc.pid,
         cwd,
@@ -116,13 +120,20 @@ const runProcess = (task, callbacks = {}) => {
 
     messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]', time: Date.now() })
 
-    const checkStatuses = (data) => {
-        if (statuses) {
-            statuses.forEach((status) => {
-                const isValid = status.regex ? RegExp(status.pattern).test(data) : data.includes(status.pattern)
+    const checkUsersHooks = (data) => {
+        if (hooks) {
+            hooks.forEach((hook) => {
+                const isValid = hook.regex ? RegExp(hook.pattern).test(data) : data.includes(hook.pattern)
 
                 if (isValid) {
-                    procData.status = status.status
+                    if (hook.status) {
+                        procData.status = hook.status
+                        messagesHandler.processes(constants.PROCESSES_LIST, processes)
+                    }
+                    if (hook.action) {
+                        const { action } = hook
+                        prepareProcess({ ...action, project_id, parent_pid: proc.pid })
+                    }
                 }
             })
         }
@@ -137,7 +148,7 @@ const runProcess = (task, callbacks = {}) => {
             callbacks.stdoutCallback(data)
         }
 
-        checkStatuses(data)
+        checkUsersHooks(data)
 
         if (std_out[proc.pid]) {
             std_out[proc.pid].push(data)
@@ -155,7 +166,7 @@ const runProcess = (task, callbacks = {}) => {
             callbacks.stderrCallback(data)
         }
 
-        checkStatuses(data)
+        checkUsersHooks(data)
 
         if (std_err[proc.pid]) {
             std_err[proc.pid].push(data)
