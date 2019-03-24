@@ -6,7 +6,7 @@
 - [x] Allow to run tasks in queue
    - [ ] Allow to pipe STDOUT to next task 
 - [ ] Allow to send data to STDIN
-- [ ] Allow custom statuses on STDOUT patterns
+- [x] Allow custom statuses on STDOUT patterns
 - [ ] Allow action hooks on STDOUT patterns
 - [ ] Allow connections between server Parrot instances
 - [ ] Start with UI
