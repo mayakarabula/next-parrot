@@ -28,14 +28,16 @@ const listProcesses = () => {
     }, 5000)
 }
 
-const killProcess = (pid) => {
-    process.kill(-pid)
+const killProcess = (id) => {
+    const proc = find(processes, { id })
+    proc && process.kill(proc.pid)
 }
 
-const rerunProcess = (pid) => {
-    const config = modelController.getElement(processes)({ pid })
-    if (config) {
-        runProcess(config)
+const rerunProcess = (id) => {
+    const proc = find(processes, { id })
+
+    if (proc) {
+        prepareProcess(proc)
     } else {
         errorHandler.error('ERROR! Process was not found.')
     }
@@ -43,6 +45,8 @@ const rerunProcess = (pid) => {
 
 const prepareProcess = async (config) => {
     const { project_id, type } = config
+
+    console.log('got this config', config)
 
     const task = verifyTask(config)
 
@@ -105,6 +109,7 @@ const runProcess = (task, callbacks = {}) => {
     }
 
     const procData = {
+        id: uuidv4(),
         task_id,
         project_id,
         queue_id,
@@ -115,10 +120,12 @@ const runProcess = (task, callbacks = {}) => {
         cwd,
         args,
         env_params,
-        status: constants.PROCESS_STARTED
+        status: constants.PROCESS_STARTED,
+        started_at: +Date.now(),
+        updated_at: +Date.now()
     }
 
-    messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]', time: Date.now() })
+    messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]', time: +Date.now() })
 
     const checkUsersHooks = (data) => {
         if (hooks) {
@@ -128,6 +135,7 @@ const runProcess = (task, callbacks = {}) => {
                 if (isValid) {
                     if (hook.status) {
                         procData.status = hook.status
+                        procData.updated_at = +Date.now()
                         messagesHandler.processes(constants.PROCESSES_LIST, processes)
                     }
                     if (hook.action) {
@@ -142,7 +150,8 @@ const runProcess = (task, callbacks = {}) => {
     proc.stdout.on('data', (buffer) => {
         const data = buffer.toString()
 
-        messagesHandler.processes(constants.STDOUT, { pid: proc.pid, data: data, time: Date.now() })
+        procData.updated_at = +Date.now()
+        messagesHandler.processes(constants.STDOUT, { pid: proc.pid, data: data, time: +Date.now() })
 
         if (callbacks.stdoutCallback) {
             callbacks.stdoutCallback(data)
@@ -160,7 +169,8 @@ const runProcess = (task, callbacks = {}) => {
     proc.stderr.on('data', (buffer) => {
         const data = buffer.toString()
 
-        messagesHandler.processes(constants.STDERR, { pid: proc.pid, data: data.toString(), time: Date.now() })
+        procData.updated_at = +Date.now()
+        messagesHandler.processes(constants.STDERR, { pid: proc.pid, data: data.toString(), time: +Date.now() })
 
         if (callbacks.stderrCallback) {
             callbacks.stderrCallback(data)
@@ -176,8 +186,9 @@ const runProcess = (task, callbacks = {}) => {
     });
 
     proc.on('close', (data) => {
-        messagesHandler.processes(constants.PROCESS_FINISHED, { pid: proc.pid, data: `[PROCESS HAS STOPPED WITH STATUS: ${data}]`, time: Date.now() })
+        messagesHandler.processes(constants.PROCESS_FINISHED, { pid: proc.pid, data: `[PROCESS HAS STOPPED WITH STATUS: ${data}]`, time: +Date.now() })
         procData.status = constants.PROCESS_FINISHED
+        procData.updated_at = +Date.now()
 
         if (callbacks.onCloseCallback) {
             callbacks.onCloseCallback(data, proc.pid)
@@ -185,6 +196,7 @@ const runProcess = (task, callbacks = {}) => {
     });
 
     processes.push(procData)
+    messagesHandler.processes(constants.PROCESSES_LIST, processes)
 
     return { procData, proc }
 }

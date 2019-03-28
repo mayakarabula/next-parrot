@@ -41,8 +41,13 @@ io.on('connection', socket => {
     processController.prepareProcess(data)
   })
 
-  socket.on(constants.KILL_PROCESS, data => {
-    processController.killProcess(data)
+  socket.on(constants.KILL_PROCESS, id => {
+    processController.killProcess(id)
+  })
+
+  socket.on(constants.RERUN_PROCESS, id => {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11', id)
+    processController.rerunProcess(id)
   })
 
   // socket.on('message.chat1', data => {

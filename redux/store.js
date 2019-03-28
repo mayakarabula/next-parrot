@@ -6,6 +6,7 @@ import { actionTypes } from './actionTypes'
 const initialState = {
   processes: [],
   projects: [],
+  currentProject: 'example',
   STDOUT: {},
   STDERR: {},
   errors: []

@@ -3,6 +3,12 @@ import React from 'react'
 import io from 'socket.io-client'
 import { Provider } from 'react-redux'
 import withReduxStore from '../lib/with-redux-store'
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import PageWrapper from '../src/PageWrapper';
+import Head from 'next/head';
+import JssProvider from 'react-jss/lib/JssProvider';
+import getPageContext from '../src/getPageContext';
 
 class MyApp extends App {
   static async getInitialProps ({ Component, ctx }) {
@@ -17,6 +23,12 @@ class MyApp extends App {
   state = {
     socket: null
   }
+
+  constructor() {
+    super();
+    this.pageContext = getPageContext();
+  }
+
   componentDidMount () {
     // connect to WS server and listen event
     const socket = io()
@@ -33,7 +45,26 @@ class MyApp extends App {
     return (
       <Provider store={reduxStore}>
         <Container>
-          <Component {...pageProps} socket={this.state.socket} />
+          <Head>
+            <title>My page</title>
+          </Head>
+          <JssProvider
+            registry={this.pageContext.sheetsRegistry}
+            generateClassName={this.pageContext.generateClassName}
+          >
+            <MuiThemeProvider
+              theme={this.pageContext.theme}
+              sheetsManager={this.pageContext.sheetsManager}
+            >
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline />
+              {/* Pass pageContext to the _document though the renderPage enhancer
+                  to render collected styles on server-side. */}
+              <PageWrapper>
+                <Component pageContext={this.pageContext} {...pageProps} socket={this.state.socket} />
+              </PageWrapper>
+            </MuiThemeProvider>
+          </JssProvider>
         </Container>
       </Provider>
     )

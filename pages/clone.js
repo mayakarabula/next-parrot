@@ -1,5 +1,4 @@
 import { Component } from 'react'
-import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import constants from '../shared/constants'
 import {
@@ -10,6 +9,20 @@ import {
   assignSTDOUT
 } from '../redux/actions'
 import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper'
+
+import Processes from '../src/components/Processes'
+import QuickTasks from '../src/components/QuickTasks'
+
+const styles = {
+  greetingMessage: {
+    padding: 12,
+    maxWidth: 600,
+    marginBottom: 12
+  }
+}
 
 class ChatTwo extends Component {
   // fetch old messages data from the server
@@ -152,43 +165,37 @@ class ChatTwo extends Component {
     }))
   }
 
+
   render () {
+    const { classes } = this.props;
+
+    console.log(this.props)
+
     return (
-      <main>
+      <div>
+        <Paper elevation={1} className={classes.greetingMessage}>
+          <Typography variant="h6" component="h3">
+            Welcome to Auto Parrot!
+          </Typography>
+          <Typography component="p">
+            Are you looking for something specific?
+          </Typography>
+        </Paper>
         <div>
-          <Link href={'/'}>
-            <a>{`Chat One ${
-              this.state.newMessage > 0
-                ? `( ${this.state.newMessage} new message )`
-                : ''
-            }`}</a>
-          </Link>
-          <br />
-          <Link href={'/clone'}>
-            <a>{'Chat Two'}</a>
-          </Link>
-          <ul>
-            {this.state.messages.map(message => (
-              <li key={message.id}>{message.value}</li>
-            ))}
-          </ul>
-          <form onSubmit={e => this.sendDefined(e)}>
-            <input
-              onChange={this.handleChange}
-              type='text'
-              placeholder='Hello world!'
-              value={this.state.field}
-            />
-            <button>Send</button>
-          </form>
           <br/>
           <button onClick={this.sendDefined}>defined</button>
           <button onClick={this.sendQuick}>quick</button>
           <button onClick={this.sendQueue}>queue</button>
+
+          <QuickTasks socket={this.props.socket} />
+          <Processes socket={this.props.socket} />
         </div>
-      </main>
+      </div>
     )
   }
 }
 
-export default connect()(ChatTwo)
+const mapStateToProps = (state) => ({
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(ChatTwo))
