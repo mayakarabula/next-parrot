@@ -20,3 +20,7 @@ export const assignSTDERR = (stderr) => {
 export const assignErrors = (errors) => {
   return ({ type: actionTypes.ASSIGN_ERRORS, payload: errors })
 }
+
+export const selectProcess = (pid) => {
+  return ({ type: actionTypes.SELECT_PROCESS, payload: pid })
+}

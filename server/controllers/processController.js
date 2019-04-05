@@ -125,7 +125,7 @@ const runProcess = (task, callbacks = {}) => {
         updated_at: +Date.now()
     }
 
-    messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]', time: +Date.now() })
+    messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]\n', time: +Date.now() })
 
     const checkUsersHooks = (data) => {
         if (hooks) {
@@ -186,7 +186,7 @@ const runProcess = (task, callbacks = {}) => {
     });
 
     proc.on('close', (data) => {
-        messagesHandler.processes(constants.PROCESS_FINISHED, { pid: proc.pid, data: `[PROCESS HAS STOPPED WITH STATUS: ${data}]`, time: +Date.now() })
+        messagesHandler.processes(constants.PROCESS_FINISHED, { pid: proc.pid, data: `[PROCESS HAS STOPPED WITH STATUS: ${data}]\n`, time: +Date.now() })
         procData.status = constants.PROCESS_FINISHED
         procData.updated_at = +Date.now()
 

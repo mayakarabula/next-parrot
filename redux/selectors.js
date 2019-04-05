@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import find from 'lodash/find'
+import * as constants from '../shared/constants'
 
 export const getProcesses = (state) => state.processes || []
 
@@ -35,3 +36,20 @@ export const getCurrentQueueTasks = createSelector(
     (tasks) => tasks.queues || []
 )
 
+export const getCurrentProcess = (state) => state.currentProcess
+
+export const getStdout = (state) => state[constants.STDOUT]
+
+export const getStdoutByPid = createSelector(
+    getStdout,
+    getCurrentProcess,
+    (stdOut, procPid) => stdOut[procPid] || []
+)
+
+export const getStderr = (state) => state[constants.STDERR]
+
+export const getStderrByPid = createSelector(
+    getStderr,
+    getCurrentProcess,
+    (stdErr, procPid) => stdErr[procPid] || []
+)

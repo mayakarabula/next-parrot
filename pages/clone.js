@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper'
 
 import Processes from '../src/components/Processes'
 import QuickTasks from '../src/components/QuickTasks'
+import Terminal from '../src/components/Terminal'
 
 const styles = {
   greetingMessage: {
@@ -189,6 +190,7 @@ class ChatTwo extends Component {
 
           <QuickTasks socket={this.props.socket} />
           <Processes socket={this.props.socket} />
+          <Terminal />
         </div>
       </div>
     )

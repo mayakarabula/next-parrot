@@ -5,7 +5,9 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import ReplayIcon from '@material-ui/icons/Replay'
 import moment from 'moment'
 import Chip from '@material-ui/core/Chip';
+import CodeIcon from '@material-ui/icons/Code'
 import TrainIcon from '@material-ui/icons/Train'
+import MoreIcon from '@material-ui/icons/MoreVert'
 import GroupIcon from '@material-ui/icons/Group'
 import { getProcesses } from '../../redux/selectors'
 import IconButton from '@material-ui/core/IconButton';
@@ -15,6 +17,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SimpleTable from './Table'
 import SimpleJsonView from './SimpleJsonView'
 import constants from '../../shared/constants'
+import { selectProcess } from '../../redux/actions'
 
 const dotStyle = {
     height: 10,
@@ -44,6 +47,10 @@ class Processes extends React.Component {
         this.props.socket.emit(constants.RERUN_PROCESS, process.id)
     }
 
+    selectProcess = (process) => {
+        this.props.selectProcess(process.pid)
+    }
+
     render() {
         const { classes } = this.props
 
@@ -63,14 +70,14 @@ class Processes extends React.Component {
                     return <div>{parentLabel}{queueLabel}</div>
                     }},
                     { label: 'PID', id: 'pid' },
-                    { label: 'Started At', id: 'started_at', renderer: (val) => moment(val).format('MMM Do, h:mm:ss a') },
+                    // { label: 'Started At', id: 'started_at', renderer: (val) => moment(val).format('MMM Do, h:mm:ss a') },
                     { label: 'Updated At', id: 'updated_at', renderer: (val) => moment(val).format('MMM Do, h:mm:ss a') },
-                    { label: 'Stats', id: 'stats', renderer: (val) => (
-                        window ? <SimpleJsonView data={val} /> : <div />
-                    ) },
-                    { label: 'ENV', id: 'env_params', renderer: (val) => (
-                        window ? <SimpleJsonView data={val} /> : <div />
-                    ) },
+                    // { label: 'Stats', id: 'stats', renderer: (val) => (
+                    //     window ? <SimpleJsonView data={val} /> : <div />
+                    // ) },
+                    // { label: 'ENV', id: 'env_params', renderer: (val) => (
+                    //     window ? <SimpleJsonView data={val} /> : <div />
+                    // ) },
                     { label: 'Status', id: 'status', renderer: (val) => {
                     if (val.includes('PROCESS_FINISHED')) {
                         return <div><span className={classes.blueDot} /> FINISHED </div>
@@ -83,14 +90,17 @@ class Processes extends React.Component {
                     { label: 'Actions', id: '', renderer: (val, row) => {
                     return (
                         <div>
-                        <IconButton>
-                            <DescriptionIcon />
+                        <IconButton style={{ padding: 5 }}>
+                            <MoreIcon />
                         </IconButton>
-                        <IconButton onClick={() => this.rerunProcess(row)} >
+                        <IconButton onClick={() => this.rerunProcess(row)} style={{ padding: 5 }}>
                             <ReplayIcon />
                         </IconButton>
                         <IconButton onClick={() => this.killProcess(row)} >
                             <DeleteIcon />
+                        </IconButton>
+                        <IconButton onClick={() => this.selectProcess(row)} >
+                            <CodeIcon />
                         </IconButton>
                         </div>
                     )
@@ -106,4 +116,10 @@ const mapStateToProps = (state) => ({
     processes: getProcesses(state),
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(Processes))
+const mapDispatchToProps = dispatch => ({
+    selectProcess: (pid) => { 
+        dispatch(selectProcess(pid))
+     }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Processes))

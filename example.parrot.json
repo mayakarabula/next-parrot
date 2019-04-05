@@ -10,7 +10,7 @@
                     "fields": ["a"]
                 },
                 "command": "node",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["hello.js"]
             }
         ],
@@ -22,7 +22,7 @@
                     "fields": ["a"]
                 },
                 "command": "node",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["hello.js"]
             },
             {
@@ -32,7 +32,7 @@
                     "fields": ["a"]
                 },
                 "command": "ruby",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["hello.rb"],
                 "hooks": [
                     {
@@ -55,7 +55,7 @@
                     "fields": []
                 },
                 "command": "grep",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["Hello"]
             }
         ],

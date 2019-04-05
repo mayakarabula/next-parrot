@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SimpleTable from './Table'
 import FlashIcon from '@material-ui/icons/FlashOn'
 import constants from '../../shared/constants'
+import Terminal from './Terminal'
 
 const styles = {}
 

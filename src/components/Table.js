@@ -18,6 +18,9 @@ const styles = theme => ({
   },
   table: {
     minWidth: 700,
+  },
+  tableCell: {
+    fontSize: 11
   }
 });
 
@@ -26,7 +29,7 @@ function SimpleTable(props) {
 
   return (
     <Paper className={classes.root}>
-      <Table className={classes.table}>
+      <Table className={classes.table} padding='dense'>
         <TableHead>
           <TableRow>
             {props.heads.map(
@@ -38,7 +41,7 @@ function SimpleTable(props) {
             {props.data.map((dataRow, index) => (
                 <TableRow key={dataRow.id} style={{ backgroundColor: index === props.selected ? '#ffeee8' : 'white' }}>
                     {props.heads.map((head) => (
-                        <TableCell>
+                        <TableCell className={classes.tableCell}>
                           {
                             head.renderer ?
                               head.renderer(dataRow[head.id], dataRow) :
@@ -50,6 +53,7 @@ function SimpleTable(props) {
             ))}
         </TableBody>
       </Table>
+      {props.children}
     </Paper>
   );
 }

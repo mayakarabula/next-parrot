@@ -7,6 +7,7 @@ const initialState = {
   processes: [],
   projects: [],
   currentProject: 'example',
+  currentProcess: '',
   STDOUT: {},
   STDERR: {},
   errors: []
@@ -45,6 +46,10 @@ export const reducer = (state = initialState, action) => {
         { data: payload.data, time: payload.time }
       ]
       return Object.assign({}, state, { STDERR })
+    case actionTypes.SELECT_PROCESS:
+      return Object.assign({}, state, {
+        currentProcess: action.payload
+      })
     default:
       return state
   }
