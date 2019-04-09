@@ -29,7 +29,7 @@ class QuickTasks extends React.Component {
                 heads={[
                     { label: 'Name', id: 'name' },
                     { label: 'Command with Arguments', id: 'command', renderer: (val, row) => `${val} ${(row['args'] || []).join(' ')}`  },
-                    { label: 'Actions', id: '', renderer: (val, row) => {
+                    { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
                     console.log(row)
                     return (
                         <div>

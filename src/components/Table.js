@@ -33,7 +33,7 @@ function SimpleTable(props) {
         <TableHead>
           <TableRow>
             {props.heads.map(
-                (head) => <TableCell>{head.label}</TableCell>
+                (head) => <TableCell align={head.align || 'inherit'}>{head.label}</TableCell>
             )}
           </TableRow>
         </TableHead>
@@ -41,7 +41,7 @@ function SimpleTable(props) {
             {props.data.map((dataRow, index) => (
                 <TableRow key={dataRow.id} style={{ backgroundColor: index === props.selected ? '#ffeee8' : 'white' }}>
                     {props.heads.map((head) => (
-                        <TableCell className={classes.tableCell}>
+                        <TableCell className={classes.tableCell} align={head.align || 'inherit'} >
                           {
                             head.renderer ?
                               head.renderer(dataRow[head.id], dataRow) :

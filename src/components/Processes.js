@@ -6,7 +6,7 @@ import ReplayIcon from '@material-ui/icons/Replay'
 import moment from 'moment'
 import Chip from '@material-ui/core/Chip';
 import CodeIcon from '@material-ui/icons/Code'
-import TrainIcon from '@material-ui/icons/Train'
+import TrafficIcon from '@material-ui/icons/Traffic'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import GroupIcon from '@material-ui/icons/Group'
 import { getProcesses } from '../../redux/selectors'
@@ -18,6 +18,8 @@ import SimpleTable from './Table'
 import SimpleJsonView from './SimpleJsonView'
 import constants from '../../shared/constants'
 import { selectProcess } from '../../redux/actions'
+import sortBy from 'lodash/sortBy'
+import StyledIconButton from './StyledIconButton'
 
 const dotStyle = {
     height: 10,
@@ -64,7 +66,7 @@ class Processes extends React.Component {
                         <Chip color="secondary" label={`PID: ${parent_pid}`} icon={<GroupIcon />} clickable style={{ color: 'white' }} /> :
                         ''
                     const queueLabel = queue_id && queue_uuid ?
-                    <Chip color="secondary" label={`${queue_id} | ${queue_uuid.substr(0,5)}`} icon={<TrainIcon />} clickable style={{ color: 'white' }} />
+                    <Chip color="secondary" label={`${queue_id} | ${queue_uuid.substr(0,5)}`} icon={<TrafficIcon />} clickable style={{ color: 'white' }} />
                     : ''
 
                     return <div>{parentLabel}{queueLabel}</div>
@@ -87,26 +89,18 @@ class Processes extends React.Component {
                     }
                     return val
                     }},
-                    { label: 'Actions', id: '', renderer: (val, row) => {
+                    { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
                     return (
                         <div>
-                        <IconButton style={{ padding: 5 }}>
-                            <MoreIcon />
-                        </IconButton>
-                        <IconButton onClick={() => this.rerunProcess(row)} style={{ padding: 5 }}>
-                            <ReplayIcon />
-                        </IconButton>
-                        <IconButton onClick={() => this.killProcess(row)} >
-                            <DeleteIcon />
-                        </IconButton>
-                        <IconButton onClick={() => this.selectProcess(row)} >
-                            <CodeIcon />
-                        </IconButton>
+                            <StyledIconButton tooltip='show more' icon={<MoreIcon />} />
+                            <StyledIconButton tooltip='start again' icon={<ReplayIcon />} onClick={() => this.rerunProcess(row)} />
+                            <StyledIconButton tooltip='stop' icon={<DeleteIcon />} onClick={() => this.killProcess(row)} />
+                            <StyledIconButton tooltip='open in terminal' icon={<CodeIcon />} onClick={() => this.selectProcess(row)} />
                         </div>
                     )
                     }}
                 ]}
-                data={this.props.processes || []}
+                data={sortBy(this.props.processes, 'updated_at').reverse() || []}
             />
         )
     }
