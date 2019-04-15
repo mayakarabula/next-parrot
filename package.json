@@ -12,6 +12,7 @@
     "next": "^7.0.3",
     "pidusage": "^2.0.17",
     "react": "^16.8.1",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.1",
     "react-json-tree": "^0.11.2",
     "react-json-view": "^1.19.1",

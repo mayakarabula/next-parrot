@@ -3,7 +3,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 const StyledIconButton = (props) => {
   const Button = (
-    <IconButton style={{ padding: 5 }} onClick={props.onClick}>
+    <IconButton style={{ padding: 5, ...props.style }} onClick={props.onClick}>
       {props.icon}
     </IconButton>
   )

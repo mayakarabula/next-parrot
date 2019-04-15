@@ -8,6 +8,7 @@ import SimpleTable from './Table'
 import FlashIcon from '@material-ui/icons/FlashOn'
 import constants from '../../shared/constants'
 import Terminal from './Terminal'
+import LabelClipboard from './LabelClipboard'
 
 const styles = {}
 
@@ -28,7 +29,7 @@ class QuickTasks extends React.Component {
             <SimpleTable
                 heads={[
                     { label: 'Name', id: 'name' },
-                    { label: 'Command with Arguments', id: 'command', renderer: (val, row) => `${val} ${(row['args'] || []).join(' ')}`  },
+                    { label: 'Command with Arguments', id: 'command', renderer: (val, row) => <LabelClipboard text={`${val} ${(row['args'] || []).join(' ')}`} /> },
                     { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
                     console.log(row)
                     return (

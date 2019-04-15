@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import LabelClipboard from './LabelClipboard'
 
 const styles = theme => ({
   root: {
@@ -20,7 +21,7 @@ const styles = theme => ({
     minWidth: 700,
   },
   tableCell: {
-    fontSize: 11
+    fontSize: 12
   }
 });
 
@@ -45,7 +46,7 @@ function SimpleTable(props) {
                           {
                             head.renderer ?
                               head.renderer(dataRow[head.id], dataRow) :
-                              dataRow[head.id] || ''
+                              <LabelClipboard text={dataRow[head.id] || ''} />
                           }
                         </TableCell>
                     ))}
