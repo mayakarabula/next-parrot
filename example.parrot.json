@@ -10,7 +10,7 @@
                     "fields": ["a"]
                 },
                 "command": "node",
-                "cwd": "/Users/jakub/next-parrot",
+                "cwd": "/home/jakub/parrot-next",
                 "args": ["hello.js"]
             }
         ],
@@ -19,10 +19,13 @@
                 "id": "easy mode",
                 "name": "easy mode",
                 "env_params": {
-                    "fields": ["a"]
+                    "fields": ["a"],
+                    "params": {
+                        "a": 3
+                    }
                 },
                 "command": "node",
-                "cwd": "/Users/jakub/next-parrot",
+                "cwd": "/home/jakub/parrot-next",
                 "args": ["hello.js"]
             },
             {
@@ -32,7 +35,7 @@
                     "fields": ["a"]
                 },
                 "command": "ruby",
-                "cwd": "/Users/jakub/next-parrot",
+                "cwd": "/home/jakub/parrot-next",
                 "args": ["hello.rb"],
                 "hooks": [
                     {
@@ -55,7 +58,7 @@
                     "fields": []
                 },
                 "command": "grep",
-                "cwd": "/Users/jakub/next-parrot",
+                "cwd": "/home/jakub/parrot-next",
                 "args": ["Hello"]
             }
         ],

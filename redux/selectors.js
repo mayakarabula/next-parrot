@@ -1,6 +1,19 @@
-import { createSelector } from 'reselect'
+import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect'
 import find from 'lodash/find'
+import isEqual from 'lodash/isEqual'
 import * as constants from '../shared/constants'
+
+const createDeepEqualSelector = createSelectorCreator(
+    defaultMemoize,
+    compare
+  )
+
+const compare = (a,b) => {
+    console.log('comparing')
+    console.log(a)
+    console.log(b)
+    return false
+}
 
 export const getProcesses = (state) => state.processes || []
 
@@ -40,7 +53,7 @@ export const getCurrentProcess = (state) => state.currentProcess
 
 export const getStdout = (state) => state[constants.STDOUT]
 
-export const getStdoutByPid = createSelector(
+export const getStdoutByPid = createDeepEqualSelector(
     getStdout,
     getCurrentProcess,
     (stdOut, procPid) => stdOut[procPid] || []
@@ -48,7 +61,7 @@ export const getStdoutByPid = createSelector(
 
 export const getStderr = (state) => state[constants.STDERR]
 
-export const getStderrByPid = createSelector(
+export const getStderrByPid = createDeepEqualSelector(
     getStderr,
     getCurrentProcess,
     (stdErr, procPid) => stdErr[procPid] || []

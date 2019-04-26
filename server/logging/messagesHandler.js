@@ -11,7 +11,7 @@ const general = (type, message) => {
 }
 
 const processes = (type, message) => {
-  console.log(message)
+  // console.log(message)
   if (io) {
       io.sockets.to(constants.PROCESSES_CHANNEL).emit(type, message)
   }
