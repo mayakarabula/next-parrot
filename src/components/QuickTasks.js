@@ -9,6 +9,8 @@ import FlashIcon from '@material-ui/icons/FlashOn'
 import constants from '../../shared/constants'
 import Terminal from './Terminal'
 import LabelClipboard from './LabelClipboard'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBolt, faFileAlt } from '@fortawesome/free-solid-svg-icons'
 
 const styles = {}
 
@@ -34,11 +36,11 @@ class QuickTasks extends React.Component {
                     console.log(row)
                     return (
                         <div>
-                        <IconButton onClick={() => this.prepareTask(row)}>
-                            <FlashIcon />
+                        <IconButton onClick={() => this.prepareTask(row)} style={{ padding: 8 }}>
+                            <FontAwesomeIcon icon={faBolt} style={{ width: 20, height: 20 }} />
                         </IconButton>
-                        <IconButton>
-                            <DescriptionIcon />
+                        <IconButton style={{ padding: 5 }}>
+                            <FontAwesomeIcon icon={faFileAlt} style={{ width: 17, height: 17 }}  />
                         </IconButton>
                         </div>
                     )

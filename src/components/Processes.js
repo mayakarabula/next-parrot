@@ -21,6 +21,9 @@ import { selectProcess } from '../../redux/actions'
 import sortBy from 'lodash/sortBy'
 import StyledIconButton from './StyledIconButton'
 
+import { faEllipsisV, faHandPaper, faRedo, faTerminal } from '@fortawesome/free-solid-svg-icons'
+
+
 const dotStyle = {
     height: 10,
     width: 10,
@@ -92,10 +95,9 @@ class Processes extends React.Component {
                     { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
                     return (
                         <div>
-                            <StyledIconButton tooltip='show more' icon={<MoreIcon />} />
-                            <StyledIconButton tooltip='start again' icon={<ReplayIcon />} onClick={() => this.rerunProcess(row)} />
-                            <StyledIconButton tooltip='stop' icon={<DeleteIcon />} onClick={() => this.killProcess(row)} />
-                            <StyledIconButton tooltip='open in terminal' icon={<CodeIcon />} onClick={() => this.selectProcess(row)} />
+                            <StyledIconButton tooltip='start again' icon={faRedo} onClick={() => this.rerunProcess(row)} />
+                            <StyledIconButton tooltip='stop' icon={faHandPaper} onClick={() => this.killProcess(row)} />
+                            <StyledIconButton tooltip='open in terminal' icon={faTerminal} onClick={() => this.selectProcess(row)} />
                         </div>
                     )
                     }}
