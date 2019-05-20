@@ -26,12 +26,26 @@ class QuickTasks extends React.Component {
         this.props.socket.emit(constants.START_PROCESS, data)
     }
 
+    prepareData = (data) => {
+        console.log(data)
+        return data.map(
+            (row) => {
+                console.log(row)
+                console.log()
+                row.command = row.command + ' ' + (row.args || []).join(' ')
+                return row
+            }
+        )
+    }
+
     render() {
+        const data = this.prepareData(this.props.tasks || [])
+
         return (
             <SimpleTable
                 heads={[
                     { label: 'Name', id: 'name' },
-                    { label: 'Command with Arguments', id: 'command', renderer: (val, row) => <LabelClipboard text={`${val} ${(row['args'] || []).join(' ')}`} /> },
+                    { label: 'Command with Arguments', id: 'command' },
                     { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
                     return (
                         <div>
@@ -45,7 +59,7 @@ class QuickTasks extends React.Component {
                     )
                     }}
                 ]}
-                data={this.props.tasks || []}
+                data={data}
             />
         )
     }

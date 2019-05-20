@@ -54,8 +54,7 @@ class SimpleTable extends React.Component {
     this.state = {
       sortBy: props.sortBy || EMPTY,
       sortOrder: props.sortOrder || EMPTY,
-      searchBy: EMPTY,
-      search: ''
+      searchBy: {},
     }
   }
 
@@ -93,10 +92,18 @@ class SimpleTable extends React.Component {
 
   prepareData = (data) => {
     let transformedData = data
+    let searchEntries = Object.entries(this.state.searchBy)
 
-    if (this.state.searchBy !== EMPTY) {
-      transformedData = transformedData.filter((row) =>
-        row[this.state.searchBy] && row[this.state.searchBy].toString().includes(this.state.search)
+    if (searchEntries.length !== 0) {
+      transformedData = transformedData.filter((row) => {
+          let found = true
+          searchEntries.forEach(([ key, phrase ]) => {
+            if (row[key] && row[key].toString().toLowerCase().includes(phrase) === false) {
+              found = false
+            }
+          })
+          return found
+        }
       )
     }
 
@@ -110,50 +117,10 @@ class SimpleTable extends React.Component {
     return transformedData
   }
 
-  setSearchPhrase = event => {
-    this.setState({ search: event.target.value })
-  };
-
-  switchSearchBy = (head) => {
-    this.setState({
-      searchBy: this.state.searchBy === head ? EMPTY : head,
-      search: ''
-    })
-  }
-
-  hideSearch = () => this.setState({ searchBy: EMPTY, search: '' })
-
-  getSearch = (head, classes) => {
-    const color = this.state.searchBy === head ? ACTIVE_FILTER_COLOR : NOT_ACTIVE_FILTER_COLOR
-
-    return (
-     <Tooltip
-      classes={{
-        tooltip: classes.htmlTooltip
-      }}
-      title={(
-        <React.Fragment>
-          <TextField
-            onChange={this.setSearchPhrase}
-            label="Search"
-          />
-          <IconButton style={{ padding: 5 }} onClick={this.hideSearch}>
-            <FontAwesomeIcon icon={faTimes} style={{ width: 12, height: 12, color: NOT_ACTIVE_FILTER_COLOR }} />
-          </IconButton>
-        </React.Fragment>
-      )}
-      open={this.state.searchBy === head}
-      interactive
-      placement="top"
-      disableFocusListener
-      disableHoverListener
-      disableTouchListener
-    >
-      <IconButton style={{ padding: 5 }} onClick={() => this.switchSearchBy(head)}>
-        <FontAwesomeIcon icon={faSearch} style={{ width: 12, height: 12, color }} />
-      </IconButton>
-     </Tooltip>
-    )
+  setSearchBy = (head) => (event) => {
+    const searchBy = this.state.searchBy
+    searchBy[head] = event.target.value
+    this.setState({ searchBy })
   }
 
   render() {
@@ -169,8 +136,23 @@ class SimpleTable extends React.Component {
                     <TableCell align={head.align || 'inherit'}>
                       {head.label}
                       {head.id && head.label && this.getSorting(head.id)}
-                      {head.id && head.label && this.getSearch(head.id, classes)}
                     </TableCell>
+                  )
+              )}
+            </TableRow>
+            <TableRow>
+            {this.props.heads.map(
+                  (head) => (
+                    (head.id && head.label) ? <TableCell align={head.align || 'inherit'}>
+                      <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                        <TextField
+                          placeholder='Search column'
+                          onChange={this.setSearchBy(head.id)}
+                          inputProps={{ style: { fontSize: 12, color: 'rgba(53, 53, 53, 0.87)' } }}
+                        />
+                        <FontAwesomeIcon icon={faSearch} style={{ width: 12, height: 12 }} />
+                      </div>
+                    </TableCell> : <TableCell />
                   )
               )}
             </TableRow>
