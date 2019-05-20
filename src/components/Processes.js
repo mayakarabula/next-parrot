@@ -63,7 +63,7 @@ class Processes extends React.Component {
             <SimpleTable
                 heads={[
                     { label: 'Task', id: 'task_id' },
-                    { label: '', id: '', renderer: (val, row) => {
+                    { label: 'Mode', id: '', renderer: (val, row) => {
                     const { parent_pid, queue_id, queue_uuid } = row
                     const parentLabel = parent_pid ?
                         <Chip color="secondary" label={`PID: ${parent_pid}`} icon={<GroupIcon />} clickable style={{ color: 'white' }} /> :
@@ -71,8 +71,9 @@ class Processes extends React.Component {
                     const queueLabel = queue_id && queue_uuid ?
                     <Chip color="secondary" label={`${queue_id} | ${queue_uuid.substr(0,5)}`} icon={<TrafficIcon />} clickable style={{ color: 'white' }} />
                     : ''
+                    const forkLabel = !parentLabel && !queueLabel && 'Fork'
 
-                    return <div>{parentLabel}{queueLabel}</div>
+                    return <div>{parentLabel}{queueLabel}{forkLabel}</div>
                     }},
                     { label: 'PID', id: 'pid' },
                     // { label: 'Started At', id: 'started_at', renderer: (val) => moment(val).format('MMM Do, h:mm:ss a') },

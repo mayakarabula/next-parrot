@@ -12,6 +12,8 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 import Processes from '../src/components/Processes'
 import QuickTasks from '../src/components/QuickTasks'
@@ -112,7 +114,7 @@ class ChatTwo extends Component {
       project_id: 'example',
       // command: "ruby",
       // env_params: {},
-      // cwd: "/home/jakub/parrot-next",
+      // cwd: "/Users/jakub/next-parrot",
       args: ["hello.rb"]
     }
 
@@ -188,9 +190,13 @@ class ChatTwo extends Component {
           <button onClick={this.sendQuick}>quick</button>
           <button onClick={this.sendQueue}>queue</button>
 
+          <Tabs>
+          <Tab label="Item One" />
+          <Tab label="Item Two" />
+          <Tab label="Item Three" />
+          </Tabs>
           <QuickTasks socket={this.props.socket} />
           <Processes socket={this.props.socket} />
-          <Terminal />
         </div>
       </div>
     )

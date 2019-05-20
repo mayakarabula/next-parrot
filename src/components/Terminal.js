@@ -73,8 +73,8 @@ const mapStateToProps = (state) => {
   })
 
   return ({
-    stdOut: getStdoutByPid(state),
-    stdErr: getStderrByPid(state)
+    stdOut: '', //getStdoutByPid(state),
+    stdErr:  '' //getStderrByPid(state)
   })
 }
 

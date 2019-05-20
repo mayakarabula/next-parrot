@@ -33,7 +33,6 @@ class QuickTasks extends React.Component {
                     { label: 'Name', id: 'name' },
                     { label: 'Command with Arguments', id: 'command', renderer: (val, row) => <LabelClipboard text={`${val} ${(row['args'] || []).join(' ')}`} /> },
                     { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
-                    console.log(row)
                     return (
                         <div>
                         <IconButton onClick={() => this.prepareTask(row)} style={{ padding: 8 }}>
