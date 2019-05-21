@@ -8,7 +8,7 @@
    - [ ] Allow to pipe STDOUT in queue
 - [x] Allow custom statuses on STDOUT patterns
 - [x] Allow action hooks on STDOUT patterns
-- [ ] Start with UI
+- [x] Start with UI
 - [ ] Add forms based on JSON Schema
 - [ ] Add charts
 - [ ] Add custom actions in tables
