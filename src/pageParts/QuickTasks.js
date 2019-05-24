@@ -3,14 +3,16 @@ import { connect } from 'react-redux'
 import DescriptionIcon from '@material-ui/icons/Description'
 import { getCurrentQuickTasks, getCurrentProjectId } from '../../redux/selectors'
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import SimpleTable from './Table'
 import FlashIcon from '@material-ui/icons/FlashOn'
-import constants from '../../shared/constants'
-import Terminal from './Terminal'
-import LabelClipboard from './LabelClipboard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBolt, faFileAlt } from '@fortawesome/free-solid-svg-icons'
+
+import Terminal from '../components/Terminal'
+import LabelClipboard from '../components/LabelClipboard'
+import constants from '../../shared/constants'
+import SimpleTable from '../components/Table'
 
 const styles = {}
 
@@ -49,9 +51,15 @@ class QuickTasks extends React.Component {
                     { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
                     return (
                         <div>
-                        <IconButton onClick={() => this.prepareTask(row)} style={{ padding: 8 }}>
-                            <FontAwesomeIcon icon={faBolt} style={{ width: 20, height: 20 }} />
-                        </IconButton>
+                            <Button 
+                                style={{ marginRight: '5px' }}
+                                onClick={() => this.prepareTask(row)} 
+                                variant="outlined" 
+                                size="small" 
+                                color="primary"
+                            >
+                                run
+                            </Button>
                         <IconButton style={{ padding: 5 }}>
                             <FontAwesomeIcon icon={faFileAlt} style={{ width: 17, height: 17 }}  />
                         </IconButton>

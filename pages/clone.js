@@ -15,8 +15,8 @@ import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import Processes from '../src/components/Processes'
-import QuickTasks from '../src/components/QuickTasks'
+import Processes from '../src/pageParts/Processes'
+import QuickTasks from '../src/pageParts/QuickTasks'
 import Terminal from '../src/components/Terminal'
 
 const styles = {
@@ -29,79 +29,6 @@ const styles = {
 
 class ChatTwo extends Component {
   // fetch old messages data from the server
-  static async getInitialProps ({ req }) {
-    const response = await fetch('http://localhost:3000/messages/chat2')
-    const messages = await response.json()
-    return { messages }
-  }
-
-  static defaultProps = {
-    messages: []
-  }
-
-  // init state with the prefetched messages
-  state = {
-    field: '',
-    newMessage: 0,
-    messages: this.props.messages,
-    subscribe: false,
-    subscribed: false
-  }
-
-  subscribe = () => {
-    if (this.state.subscribe && !this.state.subscribed) {
-      // connect to WS server and listen event
-      const { dispatch } = this.props
-
-      console.log('should subscribe')
-      this.props.socket.on(constants.PROJECTS_LIST, (data) => dispatch(assignProjects(data)))
-      this.props.socket.on(constants.GENERAL_ERROR, (data) => dispatch(assignErrors(data)))
-      this.props.socket.on(constants.STDOUT, (data) => dispatch(assignSTDOUT(data)))
-      this.props.socket.on(constants.STDERR, (data) => dispatch(assignSTDERR(data)))
-      this.props.socket.on(constants.PROCESS_FINISHED, (data) => dispatch(assignSTDOUT(data)))
-      this.props.socket.on(constants.START_PROCESS, (data) => dispatch(assignSTDOUT(data)))
-      this.props.socket.on(constants.PROCESSES_LIST, (data) => dispatch(assignProcesses(data)))
-
-      // this.props.socket.on('message.chat2', this.handleMessage)
-      // this.props.socket.on('message.chat1', this.handleOtherMessage)
-      this.setState({ subscribed: true })
-    }
-  }
-  componentDidMount () {
-    this.subscribe()
-  }
-
-  componentDidUpdate () {
-    this.subscribe()
-  }
-
-  static getDerivedStateFromProps (props, state) {
-    if (props.socket && !state.subscribe) return { subscribe: true }
-    return null
-  }
-
-  // close socket connection
-  componentWillUnmount () {
-    this.props.socket.off('message.chat1', this.handleOtherMessage)
-    this.props.socket.off('message.chat2', this.handleMessage)
-  }
-
-  // add messages from server to the state
-  consoleOut = d => {
-    console.log(d)
-  }
-
-  handleMessage = message => {
-    this.setState(state => ({ messages: state.messages.concat(message) }))
-  }
-
-  handleOtherMessage = () => {
-    this.setState(prevState => ({ newMessage: prevState.newMessage + 1 }))
-  }
-
-  handleChange = event => {
-    this.setState({ field: event.target.value })
-  }
 
   // send messages to server and add them to the state
   sendDefined = event => {
@@ -124,7 +51,7 @@ class ChatTwo extends Component {
     // add it to state and clean current input value
     this.setState(state => ({
       field: '',
-      messages: state.messages.concat(message)
+      // messages: state.messages.concat(message)
     }))
   }
 
@@ -144,7 +71,7 @@ class ChatTwo extends Component {
     // add it to state and clean current input value
     this.setState(state => ({
       field: '',
-      messages: state.messages.concat(message)
+      // messages: state.messages.concat(message)
     }))
   }
 

@@ -14,12 +14,13 @@ import IconButton from '@material-ui/core/IconButton';
 import blue from '@material-ui/core/colors/blue'
 import green from '@material-ui/core/colors/green'
 import { withStyles } from '@material-ui/core/styles';
-import SimpleTable from './Table'
-import SimpleJsonView from './SimpleJsonView'
+import sortBy from 'lodash/sortBy'
+
+import SimpleTable from '../components/Table'
+import SimpleJsonView from '../components/SimpleJsonView'
 import constants from '../../shared/constants'
 import { selectProcess } from '../../redux/actions'
-import sortBy from 'lodash/sortBy'
-import StyledIconButton from './StyledIconButton'
+import StyledIconButton from '../components/StyledIconButton'
 
 import { faEllipsisV, faHandPaper, faRedo, faTerminal } from '@fortawesome/free-solid-svg-icons'
 
@@ -63,7 +64,7 @@ class Processes extends React.Component {
             <SimpleTable
                 heads={[
                     { label: 'Task', id: 'task_id' },
-                    { label: 'Mode', id: '', renderer: (val, row) => {
+                    { label: 'Mode', id: 'mode', renderer: (val, row) => {
                     const { parent_pid, queue_id, queue_uuid } = row
                     const parentLabel = parent_pid ?
                         <Chip color="secondary" label={`PID: ${parent_pid}`} icon={<GroupIcon />} clickable style={{ color: 'white' }} /> :

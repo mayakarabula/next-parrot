@@ -45,7 +45,7 @@ const NOT_ACTIVE_FILTER_COLOR = 'rgb(206, 206, 206)'
 const ACTIVE_FILTER_COLOR = '#8c8c8c'
 const DESC = 'desc'
 const ASC = 'asc'
-const EMPTY = '---'
+const EMPTY = ''
 
 class SimpleTable extends React.Component {
   constructor(props) {
@@ -55,6 +55,7 @@ class SimpleTable extends React.Component {
       sortBy: props.sortBy || EMPTY,
       sortOrder: props.sortOrder || EMPTY,
       searchBy: {},
+      isShowingSearch: false
     }
   }
 
@@ -89,6 +90,11 @@ class SimpleTable extends React.Component {
       </IconButton>
     )
   }
+
+  switchSearch = () => this.setState({
+    isShowingSearch: !this.state.isShowingSearch,
+    searchBy: {}
+  })
 
   prepareData = (data) => {
     let transformedData = data
@@ -132,16 +138,25 @@ class SimpleTable extends React.Component {
           <TableHead>
             <TableRow>
               {this.props.heads.map(
-                  (head) => (
+                  (head, index) => (
                     <TableCell align={head.align || 'inherit'}>
                       {head.label}
                       {head.id && head.label && this.getSorting(head.id)}
+
+                      {index === (this.props.heads.length -1) && (
+                        <IconButton
+                          onClick={this.switchSearch}
+                          style={{ padding: 5 }}
+                        >
+                          <FontAwesomeIcon icon={faSearch} style={{ width: 12, height: 12 }} />
+                        </IconButton>
+                      )}
                     </TableCell>
                   )
               )}
             </TableRow>
-            <TableRow>
-            {this.props.heads.map(
+            {this.state.isShowingSearch && <TableRow>
+              {this.props.heads.map(
                   (head) => (
                     (head.id && head.label) ? <TableCell align={head.align || 'inherit'}>
                       <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
@@ -149,13 +164,13 @@ class SimpleTable extends React.Component {
                           placeholder='Search column'
                           onChange={this.setSearchBy(head.id)}
                           inputProps={{ style: { fontSize: 12, color: 'rgba(53, 53, 53, 0.87)' } }}
+                          style={{ flex: 1 }}
                         />
-                        <FontAwesomeIcon icon={faSearch} style={{ width: 12, height: 12 }} />
                       </div>
                     </TableCell> : <TableCell />
                   )
               )}
-            </TableRow>
+            </TableRow>}
           </TableHead>
           <TableBody>
               {this.prepareData(this.props.data).map((dataRow, index) => (
