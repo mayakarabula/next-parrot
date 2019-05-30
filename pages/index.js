@@ -13,13 +13,8 @@ class ChatOne extends Component {
           </Link>
           <br />
           <Link href={'/clone'}>
-            <a>{`Chat Two ${
-              this.state.newMessage > 0
-                ? `( ${this.state.newMessage} new message )`
-                : ''
-            }`}</a>
+            <a>Chat Two</a>
           </Link>
-          
         </div>
       </main>
     )

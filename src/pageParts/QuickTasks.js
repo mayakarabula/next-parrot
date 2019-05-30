@@ -9,10 +9,9 @@ import FlashIcon from '@material-ui/icons/FlashOn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBolt, faFileAlt } from '@fortawesome/free-solid-svg-icons'
 
-import Terminal from '../components/Terminal'
-import LabelClipboard from '../components/LabelClipboard'
 import constants from '../../shared/constants'
 import SimpleTable from '../components/Table'
+import SocketContext from '../wrappers/sockets/socketContext'
 
 const styles = {}
 
@@ -78,4 +77,12 @@ const mapStateToProps = (state) => ({
     currentProjectId: getCurrentProjectId(state)
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(QuickTasks))
+const ConnectedComponent = connect(mapStateToProps)(withStyles(styles)(QuickTasks))
+
+const ContextedComponent = props => (
+    <SocketContext.Consumer>
+        {socket => <ConnectedComponent {...props} socket={socket} />}
+    </SocketContext.Consumer>
+)
+
+export default ContextedComponent

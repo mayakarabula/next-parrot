@@ -8,7 +8,7 @@ import PageWrapper from '../src/PageWrapper';
 import Head from 'next/head';
 import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from '../src/getPageContext';
-import SocketIOWrapper from '../src/wrappers/socketIOWrapper'
+import SocketIOWrapper from '../src/wrappers/sockets/socketIOWrapper'
 import KeyboardListenerWrapper from '../src/wrappers/keyboardListenerWrapper'
 
 class MyApp extends App {

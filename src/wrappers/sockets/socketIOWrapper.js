@@ -2,14 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux'
 import io from 'socket.io-client'
 
-import constants from '../../shared/constants'
+import constants from '../../../shared/constants'
 import {
   assignProjects,
   assignProcesses,
   assignErrors,
   assignSTDERR,
   assignSTDOUT
-} from '../../redux/actions'
+} from '../../../redux/actions'
+import SocketContext from './socketContext'
 
 class SocketIOWrapper extends React.Component {
   // static async getInitialProps ({ req }) {
@@ -79,9 +80,9 @@ class SocketIOWrapper extends React.Component {
     )
 
     return (
-      <React.Fragment>
+      <SocketContext.Provider value={this.state.socket}>
         { childElements }
-      </React.Fragment>
+      </SocketContext.Provider>
     )
   }
 }
