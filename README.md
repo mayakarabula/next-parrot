@@ -2,6 +2,9 @@
 ![last commit](https://img.shields.io/github/last-commit/jakubkarabula/next-parrot.svg)
 # AutoParrot
 
+Preview screenshot 02.06.2019:
+![](https://raw.githubusercontent.com/jakubkarabula/next-parrot/master/screenshots/Screenshot%202019-06-02%20at%2020.08.11.png)
+
 ## To Do
 - [x] Allow to run tasks in queue
 - [ ] Allow to send data to STDIN
