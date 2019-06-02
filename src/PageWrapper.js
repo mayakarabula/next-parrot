@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -26,12 +25,20 @@ import MoreIcon from '@material-ui/icons/MoreHoriz'
 import SettingsIcon from '@material-ui/icons/Settings'
 import PluginsIcon from '@material-ui/icons/Power'
 
+import InputBase from '@material-ui/core/InputBase';
+
+import TopNavigation from './pageParts/TopNavigation'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCrow } from '@fortawesome/free-solid-svg-icons'
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Link from 'next/link'
+import { Divider } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -42,6 +49,11 @@ const styles = (theme) => ({
   appBar: {
     color: grey[100],
     zIndex: theme.zIndex.drawer + 1,
+  },
+  toolBar: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    height: '50px'
   },
   barIcon: {
     color: grey[100]
@@ -68,13 +80,10 @@ const styles = (theme) => ({
     flexShrink: 0,
   },
   drawerPaper: {
-    paddingTop: 65,
     width: drawerWidth,
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
-    marginTop: 65
   },
 })
 
@@ -82,82 +91,94 @@ function PageWrapper (props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
-          <span className={classes.grow}>
-            <Link href={'/'}>
-              <Typography variant="h6" color="inherit">
-                Auto Parrot
-              </Typography>
-            </Link>
-          </span>
-          <IconButton className={classes.barIcon}>
-            <BrushIcon />
-          </IconButton>
-          <IconButton className={classes.barIcon}>
-            <DnsIcon />
-          </IconButton>
-          <IconButton className={classes.barIcon}>
-            <MoreIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <List>
-            <Link href={'/clone'}>
-              <ListItem button key='projects'>
-                <ListItemIcon><DashboardIcon /></ListItemIcon>
-                <ListItemText primary='Projects' />
-              </ListItem>
-            </Link>
-            <Link href={'/'}>
-              <ListItem button key='defined'>
-                <ListItemIcon><OnIcon /></ListItemIcon>
-                <ListItemText primary='Complex Tasks' />
-              </ListItem>
-            </Link>
-            <Link href={'/clone'}>
-              <ListItem button key='quick'>
-                <ListItemIcon><OffIcon /></ListItemIcon>
-                <ListItemText primary='Quick Tasks' />
-              </ListItem>
-            </Link>
-            <Link href={'/clone'}>
-              <ListItem button key='queues'>
-                <ListItemIcon><TrafficIcon /></ListItemIcon>
-                <ListItemText primary='Queues' />
-              </ListItem>
-            </Link>
-            <Link href={'/clone'}>
-              <ListItem button key='processes'>
-                <ListItemIcon><TrainIcon /></ListItemIcon>
-                <ListItemText primary='Running Tasks' />
-              </ListItem>
-            </Link>
-            <Link href={'/clone'}>
-              <ListItem button key='processes'>
-                <ListItemIcon><PluginsIcon /></ListItemIcon>
-                <ListItemText primary='Plugins' />
-              </ListItem>
-            </Link>
-            <Link href={'/clone'}>
-              <ListItem button key='processes'>
-                <ListItemIcon><SettingsIcon /></ListItemIcon>
-                <ListItemText primary='Settings' />
-              </ListItem>
-            </Link>
-          </List>
-        </Drawer>
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+         <div style={{ display: 'flex', height: '65px', justifyContent: 'center' }}>
+            <ListItem>
+              <ListItemIcon>
+                <FontAwesomeIcon icon={faCrow} />
+              </ListItemIcon>
+              <ListItemText primary='Auto Parrot' />
+            </ListItem>
+          </div>
+        <Divider />
+        <List>
+          <Link href={'/clone'}>
+            <ListItem button key='projects'>
+              <ListItemIcon><DashboardIcon /></ListItemIcon>
+              <ListItemText primary='Projects' />
+            </ListItem>
+          </Link>
+          <Link href={'/'}>
+            <ListItem button key='defined'>
+              <ListItemIcon><OnIcon /></ListItemIcon>
+              <ListItemText primary='Complex Tasks' />
+            </ListItem>
+          </Link>
+          <Link href={'/clone'}>
+            <ListItem button key='quick'>
+              <ListItemIcon><OffIcon /></ListItemIcon>
+              <ListItemText primary='Quick Tasks' />
+            </ListItem>
+          </Link>
+          <Link href={'/clone'}>
+            <ListItem button key='queues'>
+              <ListItemIcon><TrafficIcon /></ListItemIcon>
+              <ListItemText primary='Queues' />
+            </ListItem>
+          </Link>
+          <Link href={'/clone'}>
+            <ListItem button key='processes'>
+              <ListItemIcon><TrainIcon /></ListItemIcon>
+              <ListItemText primary='Running Tasks' />
+            </ListItem>
+          </Link>
+          <Link href={'/clone'}>
+            <ListItem button key='processes'>
+              <ListItemIcon><PluginsIcon /></ListItemIcon>
+              <ListItemText primary='Plugins' />
+            </ListItem>
+          </Link>
+          <Link href={'/clone'}>
+            <ListItem button key='processes'>
+              <ListItemIcon><SettingsIcon /></ListItemIcon>
+              <ListItemText primary='Settings' />
+            </ListItem>
+          </Link>
+        </List>
+      </Drawer>
       <main className={classes.content}>
+        <AppBar position='static' className={classes.appBar}>
+            <Toolbar className={classes.toolBar}>
+              <IconButton className={classes.barIcon}>
+                <BrushIcon />
+              </IconButton>
+              <IconButton className={classes.barIcon}>
+                <DnsIcon />
+              </IconButton>
+              <IconButton className={classes.barIcon}>
+                <MoreIcon />
+              </IconButton>
+            </Toolbar>
+
+          <TopNavigation />
+          </AppBar>
+          <AppBar position='static' style={{
+            backgroundColor: 'white',
+            color: 'black',
+            padding: '10px',
+            marginBottom: '15px'
+          }}>
+            <InputBase
+              id="standard-name"
+              placeholder='You can write here to search for any task, process or project...'
+            />
+          </AppBar>
         {props.children}
       </main>
     </div>

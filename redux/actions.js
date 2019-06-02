@@ -24,3 +24,7 @@ export const assignErrors = (errors) => {
 export const selectProcess = (pid) => {
   return ({ type: actionTypes.SELECT_PROCESS, payload: pid })
 }
+
+export const selectTab = (tabId) => {
+  return ({ type: actionTypes.SELECT_TAB, payload: tabId })
+}

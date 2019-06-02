@@ -115,9 +115,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    selectProcess: (pid) => { 
-        dispatch(selectProcess(pid))
-     }
+    selectProcess: (pid) => dispatch(selectProcess(pid))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Processes))

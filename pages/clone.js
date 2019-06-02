@@ -12,8 +12,6 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper'
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 
 import Processes from '../src/pageParts/Processes'
 import QuickTasks from '../src/pageParts/QuickTasks'
@@ -95,14 +93,32 @@ class ChatTwo extends Component {
     }))
   }
 
+  getActivePart = () => {
+    return {
+      0: <QuickTasks socket={this.props.socket} />,
+      1: <Processes socket={this.props.socket} />,
+      2: (
+        <div>
+          <h2>Work in progress</h2>
+        </div>
+      )
+    }[this.props.tabId]
+  }
 
   render () {
     const { classes } = this.props;
 
-    console.log(this.props)
+    let ActivePart = this.getActivePart()
 
     return (
-      <div>
+      <div style={{ padding: '0 1em' }}>
+        {ActivePart}
+      </div>
+    )
+  }
+}
+
+/* 
         <Paper elevation={1} className={classes.greetingMessage}>
           <Typography variant="h6" component="h3">
             Welcome to Auto Parrot!
@@ -117,20 +133,12 @@ class ChatTwo extends Component {
           <button onClick={this.sendQuick}>quick</button>
           <button onClick={this.sendQueue}>queue</button>
 
-          <Tabs>
-          <Tab label="Item One" />
-          <Tab label="Item Two" />
-          <Tab label="Item Three" />
-          </Tabs>
-          <QuickTasks socket={this.props.socket} />
-          <Processes socket={this.props.socket} />
+         
         </div>
-      </div>
-    )
-  }
-}
+        */
 
 const mapStateToProps = (state) => ({
+  tabId: state.navigation.tabId
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(ChatTwo))

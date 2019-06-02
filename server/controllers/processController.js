@@ -15,17 +15,27 @@ const std_out = {}
 const std_err = {}
 
 const listProcesses = () => {
-    setInterval(() => {
-        processes.forEach((process) => {
-            pidusage(process.pid, (error, stats) => {
-                if (!error) {
-                    process.stats = stats
-                }
-            })
+    processes.forEach((process) => {
+        pidusage(process.pid, (error, stats) => {
+            if (!error) {
+                process.stats = stats
+            }
         })
+    })
 
-        messagesHandler.processes(constants.PROCESSES_LIST, processes)
-    }, 5000)
+    messagesHandler.processes(constants.PROCESSES_LIST, processes)
+
+    // setInterval(() => {
+    //     processes.forEach((process) => {
+    //         pidusage(process.pid, (error, stats) => {
+    //             if (!error) {
+    //                 process.stats = stats
+    //             }
+    //         })
+    //     })
+
+    //     messagesHandler.processes(constants.PROCESSES_LIST, processes)
+    // }, 5000)
 }
 
 const killProcess = (id) => {

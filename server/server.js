@@ -34,6 +34,7 @@ io.on('connection', socket => {
   processController.listProcesses()
 
   socket.on(constants.GET_PROJECTS, () => {
+    console.log('get projects')
     socket.to(constants.GENERAL_CHANNEL).emit(constants.PROJECTS_LIST, projects)
   })
 
@@ -46,7 +47,7 @@ io.on('connection', socket => {
   })
 
   socket.on(constants.RERUN_PROCESS, id => {
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11', id)
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', id)
     processController.rerunProcess(id)
   })
 

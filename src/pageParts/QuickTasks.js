@@ -16,7 +16,6 @@ import SocketContext from '../wrappers/sockets/socketContext'
 const styles = {}
 
 class QuickTasks extends React.Component {
-
     prepareTask = (task) => {
         const data = {
             type: 'quick',
@@ -28,13 +27,10 @@ class QuickTasks extends React.Component {
     }
 
     prepareData = (data) => {
-        console.log(data)
         return data.map(
             (row) => {
-                console.log(row)
-                console.log()
-                row.command = row.command + ' ' + (row.args || []).join(' ')
-                return row
+                row.commandWithArgs = row.command + ' ' + (row.args || []).join(' ')
+                return Object.assign({}, row)
             }
         )
     }
@@ -46,22 +42,22 @@ class QuickTasks extends React.Component {
             <SimpleTable
                 heads={[
                     { label: 'Name', id: 'name' },
-                    { label: 'Command with Arguments', id: 'command' },
+                    { label: 'Command with Arguments', id: 'commandWithArgs' },
                     { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
                     return (
                         <div>
-                            <Button 
+                            <Button
                                 style={{ marginRight: '5px' }}
-                                onClick={() => this.prepareTask(row)} 
-                                variant="outlined" 
-                                size="small" 
+                                onClick={() => this.prepareTask(row)}
+                                variant="outlined"
+                                size="small"
                                 color="primary"
                             >
                                 run
                             </Button>
-                        <IconButton style={{ padding: 5 }}>
-                            <FontAwesomeIcon icon={faFileAlt} style={{ width: 17, height: 17 }}  />
-                        </IconButton>
+                            <IconButton style={{ padding: 5 }}>
+                                <FontAwesomeIcon icon={faFileAlt} style={{ width: 17, height: 17 }}  />
+                            </IconButton>
                         </div>
                     )
                     }}
