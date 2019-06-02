@@ -108,43 +108,43 @@ function PageWrapper (props) {
           </div>
         <Divider />
         <List>
-          <Link href={'/clone'}>
+          <Link href={'/quick'}>
             <ListItem button key='projects'>
               <ListItemIcon><DashboardIcon /></ListItemIcon>
               <ListItemText primary='Projects' />
             </ListItem>
           </Link>
-          <Link href={'/'}>
+          <Link href={'/defined'}>
             <ListItem button key='defined'>
               <ListItemIcon><OnIcon /></ListItemIcon>
               <ListItemText primary='Complex Tasks' />
             </ListItem>
           </Link>
-          <Link href={'/clone'}>
+          <Link href={'/quick'}>
             <ListItem button key='quick'>
               <ListItemIcon><OffIcon /></ListItemIcon>
               <ListItemText primary='Quick Tasks' />
             </ListItem>
           </Link>
-          <Link href={'/clone'}>
+          <Link href={'/quick'}>
             <ListItem button key='queues'>
               <ListItemIcon><TrafficIcon /></ListItemIcon>
               <ListItemText primary='Queues' />
             </ListItem>
           </Link>
-          <Link href={'/clone'}>
+          <Link href={'/quick'}>
             <ListItem button key='processes'>
               <ListItemIcon><TrainIcon /></ListItemIcon>
               <ListItemText primary='Running Tasks' />
             </ListItem>
           </Link>
-          <Link href={'/clone'}>
+          <Link href={'/quick'}>
             <ListItem button key='processes'>
               <ListItemIcon><PluginsIcon /></ListItemIcon>
               <ListItemText primary='Plugins' />
             </ListItem>
           </Link>
-          <Link href={'/clone'}>
+          <Link href={'/quick'}>
             <ListItem button key='processes'>
               <ListItemIcon><SettingsIcon /></ListItemIcon>
               <ListItemText primary='Settings' />
@@ -175,7 +175,6 @@ function PageWrapper (props) {
             marginBottom: '15px'
           }}>
             <InputBase
-              id="standard-name"
               placeholder='You can write here to search for any task, process or project...'
             />
           </AppBar>

@@ -13,17 +13,26 @@ const QUICK_TASKS_TABS = {
   GRAPHS: 2
 }
 
-const QuickTasks  = (props) => {
+const Tasks  = (props) => {
   return (
     <div style={{ padding: '0 24px' }}>
       <Typography variant='h5' component='h1' style={{ color: 'white' }}>
-        Quick Tasks
+        {props.name}
       </Typography>
 
       <Tabs value={props.tabId} style={{ marginTop: 15 }} indicatorColor="secondary">
-        <Tab onClick={() => props.selectTab(QUICK_TASKS_TABS.DEFINITIONS)} label="Tasks Definitions" />
-        <Tab onClick={() => props.selectTab(QUICK_TASKS_TABS.PROCESSES)} label="Processes" />
-        <Tab onClick={() => props.selectTab(QUICK_TASKS_TABS.GRAPHS)} label="Graphs" />
+        <Tab
+          onClick={() => props.selectTab(QUICK_TASKS_TABS.DEFINITIONS)}
+          label="Tasks Definitions"
+        />
+        <Tab
+          onClick={() => props.selectTab(QUICK_TASKS_TABS.PROCESSES)}
+          label="Processes"
+        />
+        <Tab
+          onClick={() => props.selectTab(QUICK_TASKS_TABS.GRAPHS)}
+          label="Graphs"
+        />
       </Tabs>
     </div>
   )
@@ -32,7 +41,8 @@ const QuickTasks  = (props) => {
 class TopNavigation extends React.Component {
   render() {
     switch(this.props.router.pathname) {
-      case '/clone': return QuickTasks(this.props)
+      case '/quick': return <Tasks {...this.props} name='Quick Tasks' />
+      case '/defined': return <Tasks {...this.props} name='Complex Tasks' />
       default: return <div />
     }
   }
