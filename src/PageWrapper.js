@@ -14,20 +14,12 @@ import grey from '@material-ui/core/colors/grey'
 import DnsIcon from '@material-ui/icons/Dns';
 import BrushIcon from '@material-ui/icons/Brush';
 import Drawer from '@material-ui/core/Drawer';
-import FastIcon from '@material-ui/icons/FastForward'
-import CreateIcon from '@material-ui/icons/Create'
-import DashboardIcon from '@material-ui/icons/Dashboard'
-import OnIcon from '@material-ui/icons/SpeakerNotes'
-import OffIcon from '@material-ui/icons/SpeakerNotesOff'
-import TrainIcon from '@material-ui/icons/Train'
-import TrafficIcon from '@material-ui/icons/Traffic'
 import MoreIcon from '@material-ui/icons/MoreHoriz'
-import SettingsIcon from '@material-ui/icons/Settings'
-import PluginsIcon from '@material-ui/icons/Power'
 
 import InputBase from '@material-ui/core/InputBase';
 
 import TopNavigation from './pageParts/TopNavigation'
+import Navigation from './pageParts/Navigation'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCrow } from '@fortawesome/free-solid-svg-icons'
@@ -37,7 +29,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import Link from 'next/link'
 import { Divider } from '@material-ui/core';
 
 const drawerWidth = 240;
@@ -107,50 +98,7 @@ function PageWrapper (props) {
             </ListItem>
           </div>
         <Divider />
-        <List>
-          <Link href={'/quick'}>
-            <ListItem button key='projects'>
-              <ListItemIcon><DashboardIcon /></ListItemIcon>
-              <ListItemText primary='Projects' />
-            </ListItem>
-          </Link>
-          <Link href={'/defined'}>
-            <ListItem button key='defined'>
-              <ListItemIcon><OnIcon /></ListItemIcon>
-              <ListItemText primary='Complex Tasks' />
-            </ListItem>
-          </Link>
-          <Link href={'/quick'}>
-            <ListItem button key='quick'>
-              <ListItemIcon><OffIcon /></ListItemIcon>
-              <ListItemText primary='Quick Tasks' />
-            </ListItem>
-          </Link>
-          <Link href={'/quick'}>
-            <ListItem button key='queues'>
-              <ListItemIcon><TrafficIcon /></ListItemIcon>
-              <ListItemText primary='Queues' />
-            </ListItem>
-          </Link>
-          <Link href={'/quick'}>
-            <ListItem button key='processes'>
-              <ListItemIcon><TrainIcon /></ListItemIcon>
-              <ListItemText primary='Running Tasks' />
-            </ListItem>
-          </Link>
-          <Link href={'/quick'}>
-            <ListItem button key='processes'>
-              <ListItemIcon><PluginsIcon /></ListItemIcon>
-              <ListItemText primary='Plugins' />
-            </ListItem>
-          </Link>
-          <Link href={'/quick'}>
-            <ListItem button key='processes'>
-              <ListItemIcon><SettingsIcon /></ListItemIcon>
-              <ListItemText primary='Settings' />
-            </ListItem>
-          </Link>
-        </List>
+        <Navigation />
       </Drawer>
       <main className={classes.content}>
         <AppBar position='static' className={classes.appBar}>

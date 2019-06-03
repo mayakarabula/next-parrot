@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import DescriptionIcon from '@material-ui/icons/Description'
 import { getCurrentDefinedTasks, getCurrentProjectId } from '../../redux/selectors'
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';

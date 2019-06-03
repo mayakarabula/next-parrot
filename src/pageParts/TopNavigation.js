@@ -40,7 +40,9 @@ const Tasks  = (props) => {
 
 class TopNavigation extends React.Component {
   render() {
-    switch(this.props.router.pathname) {
+    const { pathname } = this.props.router
+
+    switch(pathname) {
       case '/quick': return <Tasks {...this.props} name='Quick Tasks' />
       case '/defined': return <Tasks {...this.props} name='Complex Tasks' />
       default: return <div />
