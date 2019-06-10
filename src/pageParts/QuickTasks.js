@@ -7,11 +7,14 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import FlashIcon from '@material-ui/icons/FlashOn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBolt, faFileAlt } from '@fortawesome/free-solid-svg-icons'
+import { faBolt, faFileAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { addTab } from '../../redux/actions'
 
 import constants from '../../shared/constants'
 import SimpleTable from '../components/Table'
 import SocketContext from '../wrappers/sockets/socketContext'
+
+import TaskDescription from './TaskDescription'
 
 const styles = {}
 
@@ -55,8 +58,22 @@ class QuickTasks extends React.Component {
                             >
                                 run
                             </Button>
-                            <IconButton style={{ padding: 5 }}>
-                                <FontAwesomeIcon icon={faFileAlt} style={{ width: 17, height: 17 }}  />
+                            <IconButton
+                                onClick={() => this.props.addTab({
+                                    label: (
+                                        <span>
+                                            {row.name}
+                                            <FontAwesomeIcon icon={faTimes} style={{ marginLeft: '10px' }} />
+                                        </span>
+                                    ),
+                                    view: <TaskDescription data={row} />
+                                })}
+                                style={{ padding: 8 }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faFileAlt}
+                                    style={{ width: 17, height: 17 }}
+                                />
                             </IconButton>
                         </div>
                     )
@@ -73,7 +90,11 @@ const mapStateToProps = (state) => ({
     currentProjectId: getCurrentProjectId(state)
 })
 
-const ConnectedComponent = connect(mapStateToProps)(withStyles(styles)(QuickTasks))
+const mapDispatchToProps = dispatch => ({
+    addTab: (tab) => dispatch(addTab(tab))
+})
+
+const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(QuickTasks))
 
 const ContextedComponent = props => (
     <SocketContext.Consumer>

@@ -110,9 +110,11 @@ class ChatTwo extends Component {
 
     let ActivePart = this.getActivePart()
 
+    console.log(this.props.tabs[this.props.tabId])
+
     return (
       <div style={{ padding: '0 1em' }}>
-        {ActivePart}
+        {this.props.tabs[this.props.tabId].view}
       </div>
     )
   }
@@ -138,6 +140,7 @@ class ChatTwo extends Component {
         */
 
 const mapStateToProps = (state) => ({
+  tabs: state.navigation.tabs,
   tabId: state.navigation.tabId
 })
 

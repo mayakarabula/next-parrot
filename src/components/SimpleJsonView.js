@@ -15,7 +15,7 @@ const theme = {
     base08: '#f92672',
     base09: '#fd971f',
     base0A: '#f4bf75',
-    base0B: '#a6e22e',
+    base0B: '#cc6633',
     base0C: '#a1efe4',
     base0D: '#66d9ef',
     base0E: '#ae81ff',
@@ -23,7 +23,11 @@ const theme = {
   };
 
 const SimpleJsonView = (props) => (
-    <JSONTree data={props.data} theme={theme} hideRoot={false} shouldExpandNode={false} />
+    <JSONTree
+      data={props.data}
+      theme={theme}
+      hideRoot={false}
+    />
 )
 
 export default SimpleJsonView

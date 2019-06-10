@@ -12,13 +12,16 @@ const initialState = {
   STDERR: {},
   errors: [],
   navigation: {
-    tabId: 0
+    tabId: 0,
+    tabs: []
   }
 }
 
 // REDUCERS
 export const reducer = (state = initialState, action) => {
   const { payload } = action
+  const navigation = state.navigation
+
   switch (action.type) {
     case actionTypes.ASSIGN_PROJECTS:
       return Object.assign({}, state, {
@@ -60,8 +63,25 @@ export const reducer = (state = initialState, action) => {
       })
 
     case actionTypes.SELECT_TAB:
-      const navigation = state.navigation
       navigation.tabId = action.payload
+
+      return Object.assign({}, state, {
+        navigation
+      })
+
+    case actionTypes.ASSIGN_TABS:
+      navigation.tabs = action.payload.tabs
+      if (action.payload.tabId) {
+        navigation.tabId = action.payload.tabId
+      }
+
+      return Object.assign({}, state, {
+        navigation
+      })
+
+    case actionTypes.ADD_TAB:
+      navigation.tabs.push(action.payload)
+      navigation.tabId = navigation.tabs.length -1
 
       return Object.assign({}, state, {
         navigation

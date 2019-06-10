@@ -28,3 +28,14 @@ export const selectProcess = (pid) => {
 export const selectTab = (tabId) => {
   return ({ type: actionTypes.SELECT_TAB, payload: tabId })
 }
+
+export const assignTabs = (tabs, tabId) => {
+  return ({ type: actionTypes.ASSIGN_TABS, payload: { tabs, tabId } })
+}
+
+export const addTab = (tab) => {
+  console.log(
+    ({ type: actionTypes.ADD_TAB, payload: tab })
+  )
+  return ({ type: actionTypes.ADD_TAB, payload: tab })
+}

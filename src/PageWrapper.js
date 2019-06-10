@@ -19,7 +19,7 @@ import MoreIcon from '@material-ui/icons/MoreHoriz'
 import InputBase from '@material-ui/core/InputBase';
 
 import TopNavigation from './pageParts/TopNavigation'
-import Navigation from './pageParts/Navigation'
+import Menu from './pageParts/Menu'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCrow } from '@fortawesome/free-solid-svg-icons'
@@ -98,7 +98,7 @@ function PageWrapper (props) {
             </ListItem>
           </div>
         <Divider />
-        <Navigation />
+        <Menu />
       </Drawer>
       <main className={classes.content}>
         <AppBar position='static' className={classes.appBar}>
