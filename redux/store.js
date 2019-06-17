@@ -47,6 +47,9 @@ export const reducer = (state = initialState, action) => {
         ...(STDOUT[payload.pid] || []),
         { data: payload.data, time: payload.time }
       ]
+
+      console.log('ASSIGN TO STD OUT ', payload.pid, payload.data)
+
       return Object.assign({}, state, { STDOUT })
 
     case actionTypes.ASSIGN_STDERR:
@@ -82,6 +85,21 @@ export const reducer = (state = initialState, action) => {
     case actionTypes.ADD_TAB:
       navigation.tabs.push(action.payload)
       navigation.tabId = navigation.tabs.length -1
+
+      return Object.assign({}, state, {
+        navigation
+      })
+
+    case actionTypes.REMOVE_TAB:
+      navigation.tabs = navigation.tabs.filter(
+        (tab) => {
+          if (!tab.id) {
+            return true
+          }
+          return tab.id !== action.payload
+        }
+      )
+      navigation.tabId = 0
 
       return Object.assign({}, state, {
         navigation

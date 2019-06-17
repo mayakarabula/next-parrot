@@ -21,9 +21,13 @@ import SimpleJsonView from '../components/SimpleJsonView'
 import constants from '../../shared/constants'
 import { selectProcess } from '../../redux/actions'
 import StyledIconButton from '../components/StyledIconButton'
+import SocketContext from '../wrappers/sockets/socketContext'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { addTab, removeTab } from '../../redux/actions'
 
-import { faEllipsisV, faHandPaper, faRedo, faTerminal } from '@fortawesome/free-solid-svg-icons'
-
+import { faEllipsisV, faHandPaper, faRedo, faTerminal, faTimes } from '@fortawesome/free-solid-svg-icons'
+import ProcessInfo from './ProcessInfo';
+const uuidv4 = require('uuid/v4');
 
 const dotStyle = {
     height: 10,
@@ -77,14 +81,7 @@ class Processes extends React.Component {
                     return <div>{parentLabel}{queueLabel}{forkLabel}</div>
                     }},
                     { label: 'PID', id: 'pid' },
-                    // { label: 'Started At', id: 'started_at', renderer: (val) => moment(val).format('MMM Do, h:mm:ss a') },
                     { label: 'Updated At', id: 'updated_at', renderer: (val) => moment(val).format('MMM Do, h:mm:ss a') },
-                    // { label: 'Stats', id: 'stats', renderer: (val) => (
-                    //     window ? <SimpleJsonView data={val} /> : <div />
-                    // ) },
-                    // { label: 'ENV', id: 'env_params', renderer: (val) => (
-                    //     window ? <SimpleJsonView data={val} /> : <div />
-                    // ) },
                     { label: 'Status', id: 'status', renderer: (val) => {
                     if (val.includes('PROCESS_FINISHED')) {
                         return <div><span className={classes.blueDot} /> FINISHED </div>
@@ -99,11 +96,33 @@ class Processes extends React.Component {
                         <div>
                             <StyledIconButton tooltip='start again' icon={faRedo} onClick={() => this.rerunProcess(row)} />
                             <StyledIconButton tooltip='stop' icon={faHandPaper} onClick={() => this.killProcess(row)} />
-                            <StyledIconButton tooltip='open in terminal' icon={faTerminal} onClick={() => this.selectProcess(row)} />
+                            <StyledIconButton tooltip='open in terminal' icon={faTerminal} onClick={() => {
+                                this.selectProcess(row)
+                                const uuid = uuidv4()
+                                    this.props.addTab({
+                                        id: uuid,
+                                        label: (
+                                            <span>
+                                                {row.task_id}
+                                                <FontAwesomeIcon
+                                                    icon={faTimes}
+                                                    style={{ marginLeft: '10px' }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        this.props.removeTab(uuid)
+                                                    }}
+                                                />
+                                            </span>
+                                        ),
+                                        view: <ProcessInfo data={row} />
+                                    })
+                            }} />
                         </div>
                     )
                     }}
                 ]}
+                sortBy='updated_at'
+                sortOrder='desc'
                 data={sortBy(this.props.processes, 'updated_at').reverse() || []}
             />
         )
@@ -111,11 +130,21 @@ class Processes extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    processes: getProcesses(state),
+    processes: state.processes || [],
 })
 
 const mapDispatchToProps = dispatch => ({
-    selectProcess: (pid) => dispatch(selectProcess(pid))
+    selectProcess: (pid) => dispatch(selectProcess(pid)),
+    addTab: (tab) => dispatch(addTab(tab)),
+    removeTab: (uuid) => dispatch(removeTab(uuid))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Processes))
+const StyledProcesses = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Processes))
+
+const ContextedComponent = props => (
+    <SocketContext.Consumer>
+        {socket => <StyledProcesses {...props} socket={socket} />}
+    </SocketContext.Consumer>
+)
+
+export default ContextedComponent

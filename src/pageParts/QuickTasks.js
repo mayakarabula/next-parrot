@@ -8,7 +8,8 @@ import { withStyles } from '@material-ui/core/styles';
 import FlashIcon from '@material-ui/icons/FlashOn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBolt, faFileAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
-import { addTab } from '../../redux/actions'
+import { addTab, removeTab } from '../../redux/actions'
+const uuidv4 = require('uuid/v4');
 
 import constants from '../../shared/constants'
 import SimpleTable from '../components/Table'
@@ -49,25 +50,35 @@ class QuickTasks extends React.Component {
                     { label: '', id: 'actions', align: 'right', renderer: (val, row) => {
                     return (
                         <div>
-                            <Button
-                                style={{ marginRight: '5px' }}
-                                onClick={() => this.prepareTask(row)}
-                                variant="outlined"
-                                size="small"
-                                color="primary"
-                            >
-                                run
-                            </Button>
                             <IconButton
-                                onClick={() => this.props.addTab({
-                                    label: (
-                                        <span>
-                                            {row.name}
-                                            <FontAwesomeIcon icon={faTimes} style={{ marginLeft: '10px' }} />
-                                        </span>
-                                    ),
-                                    view: <TaskDescription data={row} />
-                                })}
+                                onClick={() => this.prepareTask(row)}
+                            >
+                                 <FontAwesomeIcon
+                                    icon={faBolt}
+                                    style={{ width: 17, height: 17 }}
+                                />
+                            </IconButton>
+                            <IconButton
+                                onClick={() => {
+                                    const uuid = uuidv4()
+                                    this.props.addTab({
+                                        id: uuid,
+                                        label: (
+                                            <span>
+                                                {row.name}
+                                                <FontAwesomeIcon
+                                                    icon={faTimes}
+                                                    style={{ marginLeft: '10px' }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        this.props.removeTab(uuid)
+                                                    }}
+                                                />
+                                            </span>
+                                        ),
+                                        view: <TaskDescription data={row} />
+                                    })}
+                                }
                                 style={{ padding: 8 }}
                             >
                                 <FontAwesomeIcon
@@ -91,7 +102,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    addTab: (tab) => dispatch(addTab(tab))
+    addTab: (tab) => dispatch(addTab(tab)),
+    removeTab: (uuid) => dispatch(removeTab(uuid))
 })
 
 const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(QuickTasks))

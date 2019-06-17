@@ -108,8 +108,10 @@ class ChatTwo extends Component {
   render () {
     const { classes } = this.props;
 
-    let ActivePart = this.getActivePart()
-
+    console.log(this.props.tabs)
+    console.log(
+      this.props.tabId
+    )
     console.log(this.props.tabs[this.props.tabId])
 
     return (

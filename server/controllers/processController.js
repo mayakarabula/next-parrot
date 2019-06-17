@@ -136,6 +136,7 @@ const runProcess = (task, callbacks = {}) => {
     }
 
     messagesHandler.processes(constants.START_PROCESS, { pid: proc.pid, data: '[PROCESS HAS STARTED]\n', time: +Date.now() })
+    messagesHandler.processes(constants.PROCESSES_LIST, processes)
 
     const checkUsersHooks = (data) => {
         if (hooks) {
@@ -174,6 +175,7 @@ const runProcess = (task, callbacks = {}) => {
         } else {
             std_out[proc.pid] = [data]
         }
+        messagesHandler.processes(constants.PROCESSES_LIST, processes)
     } );
 
     proc.stderr.on('data', (buffer) => {
@@ -193,16 +195,20 @@ const runProcess = (task, callbacks = {}) => {
         } else {
             std_err[proc.pid] = [data]
         }
+
+        messagesHandler.processes(constants.PROCESSES_LIST, processes)
     });
 
     proc.on('close', (data) => {
         messagesHandler.processes(constants.PROCESS_FINISHED, { pid: proc.pid, data: `[PROCESS HAS STOPPED WITH STATUS: ${data}]\n`, time: +Date.now() })
+
         procData.status = constants.PROCESS_FINISHED
         procData.updated_at = +Date.now()
 
         if (callbacks.onCloseCallback) {
             callbacks.onCloseCallback(data, proc.pid)
         }
+        messagesHandler.processes(constants.PROCESSES_LIST, processes)
     });
 
     processes.push(procData)

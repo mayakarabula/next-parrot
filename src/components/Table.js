@@ -20,8 +20,7 @@ const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
-    maxHeight: 300
+    overflowX: 'auto'
   },
   table: {
     minWidth: 700,
@@ -115,7 +114,7 @@ class SimpleTable extends React.Component {
 
     if (this.state.sortBy !== EMPTY) {
       transformedData = sortBy(transformedData, [this.state.sortBy])
-      if (this.state.sortOrder === ASC) {
+      if (this.state.sortOrder === DESC) {
         transformedData = transformedData.reverse()
       }
     }

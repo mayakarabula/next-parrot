@@ -34,8 +34,9 @@ export const assignTabs = (tabs, tabId) => {
 }
 
 export const addTab = (tab) => {
-  console.log(
-    ({ type: actionTypes.ADD_TAB, payload: tab })
-  )
   return ({ type: actionTypes.ADD_TAB, payload: tab })
+}
+
+export const removeTab = (id) => {
+  return ({ type: actionTypes.REMOVE_TAB, payload: id })
 }
