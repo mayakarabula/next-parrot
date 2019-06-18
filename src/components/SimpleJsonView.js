@@ -26,7 +26,7 @@ const SimpleJsonView = (props) => (
     <JSONTree
       data={props.data}
       theme={theme}
-      hideRoot={false}
+      hideRoot={true}
     />
 )
 
