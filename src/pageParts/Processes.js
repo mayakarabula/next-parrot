@@ -102,7 +102,8 @@ class Processes extends React.Component {
                                     this.props.addTab({
                                         id: uuid,
                                         label: (
-                                            <span>
+                                            <div>
+                                                <span>
                                                 {row.task_id}
                                                 <FontAwesomeIcon
                                                     icon={faTimes}
@@ -113,6 +114,10 @@ class Processes extends React.Component {
                                                     }}
                                                 />
                                             </span>
+                                            <span style={{ display:'block', fontSize:'9px' }}>
+                                                PID: {row.pid}
+                                            </span>
+                                            </div>
                                         ),
                                         view: <ProcessInfo data={row} />
                                     })

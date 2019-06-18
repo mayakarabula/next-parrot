@@ -64,7 +64,8 @@ class QuickTasks extends React.Component {
                                     this.props.addTab({
                                         id: uuid,
                                         label: (
-                                            <span>
+                                            <div>
+                                                <span>
                                                 {row.name}
                                                 <FontAwesomeIcon
                                                     icon={faTimes}
@@ -74,7 +75,11 @@ class QuickTasks extends React.Component {
                                                         this.props.removeTab(uuid)
                                                     }}
                                                 />
-                                            </span>
+                                                </span>
+                                                <span style={{ display:'block', fontSize:'9px' }}>
+                                                    description
+                                                </span>
+                                            </div>
                                         ),
                                         view: <TaskDescription data={row} />
                                     })}
