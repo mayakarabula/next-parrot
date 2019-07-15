@@ -38,6 +38,14 @@ const listProcesses = () => {
     // }, 5000)
 }
 
+const shareSTDOUT = () => {
+    messagesHandler.processes(constants.STDOUT_LIST, std_out)
+}
+
+const shareSTDERR = () => {
+    messagesHandler.processes(constants.STDERR_LIST, std_err)
+}
+
 const killProcess = (id) => {
     const proc = find(processes, { id })
     proc && process.kill(proc.pid)
@@ -220,7 +228,9 @@ const runProcess = (task, callbacks = {}) => {
 module.exports = ({
     runProcess,
     prepareProcess,
+    shareSTDOUT,
+    shareSTDERR,
     listProcesses,
     rerunProcess,
-    killProcess
+    killProcess,
 })

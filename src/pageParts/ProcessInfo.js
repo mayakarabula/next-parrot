@@ -46,7 +46,13 @@ class ProcessInfo extends React.Component {
                 <Typography>Terminal output</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Terminal style={{width: '100%'}} />
+                    <div style={{
+                        maxHeight: '300px',
+                        overflow: 'scroll',
+                        width: '100%'
+                    }}>
+                        <Terminal />
+                    </div>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
             </div>

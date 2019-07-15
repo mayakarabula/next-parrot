@@ -32,6 +32,8 @@ io.on('connection', socket => {
   socket.emit(constants.PROJECTS_LIST, projects)
 
   processController.listProcesses()
+  processController.shareSTDOUT()
+  processController.shareSTDERR()
 
   socket.on(constants.GET_PROJECTS, () => {
     console.log('get projects')

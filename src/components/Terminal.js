@@ -17,7 +17,8 @@ const styles = (theme) => ({
     background: '#282a36',
     color: '#f8f8f2',
     fontFamily: 'monospace',
-    minHeight: 250
+    minHeight: 250,
+    width: '100%'
   },
   actions: {
     float: 'right',

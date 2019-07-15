@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { actionTypes } from './actionTypes'
+import merge from 'lodash/merge'
 
 // INITIAL STATE
 const initialState = {
@@ -41,14 +42,18 @@ export const reducer = (state = initialState, action) => {
         processes: action.payload
       })
 
+    case actionTypes.INIT_STDOUT:
+        const { STDOUT } = state
+        STDOUT = merge(STDOUT, payload.data)
+
+        return Object.assign({}, state, { STDOUT })
+
     case actionTypes.ASSIGN_STDOUT:
       const { STDOUT } = state
       STDOUT[payload.pid] = [
         ...(STDOUT[payload.pid] || []),
         { data: payload.data, time: payload.time }
       ]
-
-      console.log('ASSIGN TO STD OUT ', payload.pid, payload.data)
 
       return Object.assign({}, state, { STDOUT })
 

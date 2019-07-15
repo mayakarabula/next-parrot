@@ -7,13 +7,13 @@ const verifyQuickTask = (task, config) => {
     if (env_params) {
        const { params } = env_params
 
-       const validEnv =  isEqual(
-            intersection(Object.keys(params), task.env_params.fields),
-            Object.keys(params)
-        )
-        if (!validEnv) {
-            return false
-        }
+    //    const validEnv =  isEqual(
+    //         intersection(Object.keys(params), task.env_params.fields),
+    //         Object.keys(params)
+    //     )
+    //     if (!validEnv) {
+    //         return false
+    //     }
     }
 
     if (command && task.command !== command) {

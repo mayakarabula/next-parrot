@@ -10,11 +10,41 @@
                     "fields": ["a"]
                 },
                 "command": "node",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["hello.js"]
             }
         ],
         "quick": [
+            {
+                "id": "docker ps",
+                "name": "docker ps",
+                "env_params": {
+                    "fields": ["a"]
+                },
+                "command": "docker",
+                "cwd": "/Users/jakub/Documents/jobz_web",
+                "args": ["ps"]
+            },
+            {
+                "id": "yarn build",
+                "name": "yarn build",
+                "env_params": {
+                    "fields": ["a"]
+                },
+                "command": "yarn",
+                "cwd": "/Users/jakub/Documents/jobz_web",
+                "args": ["build"]
+            },
+            {
+                "id": "yarn test",
+                "name": "yarn test",
+                "env_params": {
+                    "fields": ["a"]
+                },
+                "command": "yarn",
+                "cwd": "/Users/jakub/Documents/jobz_web",
+                "args": ["test"]
+            },
             {
                 "id": "easy mode",
                 "name": "easy mode",
@@ -25,7 +55,7 @@
                     }
                 },
                 "command": "node",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["hello.js"]
             },
             {
@@ -35,7 +65,7 @@
                     "fields": ["a"]
                 },
                 "command": "ruby",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["hello.rb"],
                 "hooks": [
                     {
@@ -58,7 +88,7 @@
                     "fields": []
                 },
                 "command": "grep",
-                "cwd": "/home/jakub/parrot-next",
+                "cwd": "/Users/jakub/next-parrot",
                 "args": ["Hello"]
             }
         ],
