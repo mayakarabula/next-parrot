@@ -20,6 +20,7 @@ const messages = {
 }
 
 const projects = projectsController.constructProjects()
+
 errorHandler.setIo(io)
 messagesHandler.setIo(io)
 

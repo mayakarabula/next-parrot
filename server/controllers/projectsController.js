@@ -1,6 +1,7 @@
 const has = require('lodash/has')
+const find = require('lodash/find')
+const remove = require('lodash/remove')
 const projectsFileHelper = require('../helpers/projectsFileHelper')
-const modelController = require('./modelController')
 const errorHandler = require('../logging/errorHandler')
 
 const PROPERTIES = ['name', 'tasks.defined', 'tasks.quick', 'tasks.queue']
@@ -34,44 +35,23 @@ const constructProjects = () => {
     return projects
 }
 
-const getProject = (filters) => {
-    return modelController.getElement(projects)(filters)
+const getProject = (projectId) => {
+    return find(projects, { id: projectId })
 }
 
-const getDefinedTask = (projectFilters) => (taskFilters) => {
-    return modelController.getElement(getDefinedTasks(projectFilters))(taskFilters, {})
+const addProject = (project) => {
+    projects.push(project)
+    return projects
 }
 
-const getDefinedTasks = (filters) => {
-    const project = getProject(filters)
-    return modelController.getPart(project)('tasks.defined', [])
-}
-
-const getQuickTasks = (filters) => {
-    const project = getProject(filters)
-    return modelController.getPart(project)('tasks.quick', [])
-}
-
-const getQuickTask = (projectFilters) => (taskFilters) => {
-    return modelController.getElement(getQuickTasks(projectFilters))(taskFilters, {})
-}
-
-const getQueueTasks = (filters) => {
-    const project = getProject(filters)
-    return modelController.getPart(project)('tasks.queue', [])
-}
-
-const getQueueTask = (projectFilters) => (taskFilters) => {
-    return modelController.getElement(getQueueTasks(projectFilters))(taskFilters, {})
+const removeProject = (projectId) => {
+    projects = remove(projects, (project) => project.id !== projectId)
+    return projects
 }
 
 module.exports = {
     constructProjects,
     getProject,
-    getDefinedTasks,
-    getDefinedTask,
-    getQuickTasks,
-    getQuickTask,
-    getQueueTasks,
-    getQueueTask
+    addProject,
+    removeProject
 }
