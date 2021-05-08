@@ -12,7 +12,7 @@
     "child_process": "^1.0.2",
     "express": "^4.15.2",
     "isomorphic-unfetch": "^2.0.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "next": "^7.0.3",
     "pidusage": "^2.0.17",
